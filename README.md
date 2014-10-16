@@ -3,7 +3,7 @@ image-ultimator
 
 
 
-    wget -N https://raw.githubusercontent.com/ryanpcmcquen/image-ultimator/master/image-ultima-fy.sh | sh image-ultima-fy.sh
+    wget -N https://raw.githubusercontent.com/ryanpcmcquen/image-ultimator/master/image-ultima-fy.sh; sh image-ultima-fy.sh
 
 
 
