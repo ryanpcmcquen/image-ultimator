@@ -1,6 +1,11 @@
 #!/bin/sh
 
 ## mozjpeg, jpegoptim and optipng must all be installed
+## if you don't have them
+## 1. shame on you!!
+## 2. brew install jpegoptim mozjpeg optipng
+
+## linux users will compile them  ;^)
 
 read -p "Would you like to BACKUP the original files? [y/N]: " response
 case $response in
@@ -15,10 +20,8 @@ esac
 
 if [ $BACKUPIMAGES = true ]; then
   mkdir -pv original-image-files/
-  rsync -arE *.jpg original-image-files/
-  rsync -arE *.png original-image-files/
-  ## rsync doesn't like syncing to a higher directory,
-  ## so we just move stuff
+  find . -name "*.jpg" -type f -exec cp -R {} original-image-files/ \;
+  find . -name "*.png" -type f -exec cp -R {} original-image-files/ \;
   mv original-image-files/ ../original-image-files/
 fi
 
@@ -31,4 +34,3 @@ else
   ## add linux version here
   echo "coming soon"
 fi
-
