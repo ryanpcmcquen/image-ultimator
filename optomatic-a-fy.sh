@@ -5,9 +5,10 @@
 
 if [ "$( uname -s )" = Darwin ]; then
   ## mac version
-  find . -name “*.jpg” -print0 | xargs -0 -I filename jpegtran -copy none -optimize -outfile filename filename
-  find . -name “*.jpg” -print0 | xargs -0 -I filename jpegoptim -m65 -outfile filename filename
+  find . -name "*.jpg" -type f -exec jpegtran -copy none -optimize -outfile {} {} \;
+  find . -name "*.jpg" -type f -exec jpegoptim -m65 {} \;
 else
   ## add linux version here
   echo "coming soon"
 fi
+
