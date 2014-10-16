@@ -14,9 +14,12 @@ case $response in
 esac
 
 if [ $BACKUPIMAGES = true ]; then
-  mkdir -pv ../original-image-files/
-  rsync -arE *.jpg ../original-image-files/
-  rsync -arE *.png ../original-image-files/
+  mkdir -pv original-image-files/
+  rsync -arE *.jpg original-image-files/
+  rsync -arE *.png original-image-files/
+  ## rsync doesn't like syncing to a higher directory,
+  ## so we just move stuff
+  mv original-image-files/ ../original-image-files/
 fi
 
 if [ "$( uname -s )" = Darwin ]; then
