@@ -18,7 +18,7 @@ case $response in
     ;;
 esac
 
-if [ $BACKUPIMAGES = true ]; then
+if [ "$BACKUPIMAGES" = true ]; then
   mkdir -pv original-image-files/
   find . -name "*.jpg" -type f -exec cp -R {} original-image-files/ \;
   find . -name "*.png" -type f -exec cp -R {} original-image-files/ \;
