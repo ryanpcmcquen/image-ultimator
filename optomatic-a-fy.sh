@@ -9,4 +9,5 @@ if [ "$( uname -s )" = Darwin ]; then
   ls --color=never *.jpg | xargs -i jpegoptim -m65 {}
 else
   ## add linux version here
+  echo "coming soon"
 fi
