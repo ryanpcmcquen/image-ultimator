@@ -2,7 +2,7 @@
 
 ## mozjpeg, jpegoptim and optipng must all be installed
 
-read -r -p "Would you like to BACKUP the original files? [y/N]: " response
+read -p "Would you like to BACKUP the original files? [y/N]: " response
 case $response in
   [yY][eE][sS]|[yY])
     export BACKUPIMAGES=true;
