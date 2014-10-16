@@ -15,8 +15,10 @@ esac
 
 if [ $BACKUPIMAGES = true ]; then
   mkdir -p ./original-image-files/
-  find . -name "*.jpg" -type f -exec cp -r {} {,.OLD} \;
-  find . -name "*.png" -type f -exec cp -r {} {,.OLD} \;
+  #find . -name "*.jpg" -type f -exec cp -r {} {,.OLD} \;
+  #find . -name "*.png" -type f -exec cp -r {} {,.OLD} \;
+  rsync -aE ./*.jpg ./original-image-files/
+  rsync -aE ./*.png ./original-image-files/
 fi
 
 if [ "$( uname -s )" = Darwin ]; then
