@@ -1,7 +1,7 @@
 image-ultimator
 ===============
 
-    curl https://raw.githubusercontent.com/ryanpcmcquen/image-ultimator/master/optomatic-a-fy.sh | sh
+    wget -N https://raw.githubusercontent.com/ryanpcmcquen/image-ultimator/master/optomatic-a-fy.sh | sh optomatic-a-fy.sh
 
 
 #USE AT YOUR OWN RISK!
