@@ -14,9 +14,9 @@ case $response in
 esac
 
 if [ $BACKUPIMAGES = true ]; then
-  mkdir -pv original-image-files/
-  rsync -arE *.jpg original-image-files/
-  rsync -arE *.png original-image-files/
+  mkdir -pv ../original-image-files/
+  rsync -arE *.jpg ../original-image-files/
+  rsync -arE *.png ../original-image-files/
 fi
 
 if [ "$( uname -s )" = Darwin ]; then
