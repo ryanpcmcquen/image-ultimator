@@ -7,6 +7,7 @@ if [ "$( uname -s )" = Darwin ]; then
   ## mac version
   find . -name "*.jpg" -type f -exec jpegtran -copy none -optimize -outfile {} {} \;
   find . -name "*.jpg" -type f -exec jpegoptim -m65 {} \;
+  find . -name "*.png" -type f -exec optipng {} \;
 else
   ## add linux version here
   echo "coming soon"
