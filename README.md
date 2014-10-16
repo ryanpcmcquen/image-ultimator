@@ -3,7 +3,7 @@ image-ultimator
 
 
 
-    wget -N https://raw.githubusercontent.com/ryanpcmcquen/image-ultimator/master/imgult.sh; sh imgult.sh
+    wget -N https://raw.githubusercontent.com/ryanpcmcquen/image-ultimator/master/imgult; sh imgult
 
 
 
