@@ -7,7 +7,8 @@
 ## 2. brew install jpegoptim mozjpeg optipng
 ## linux
 ## 2. sbopkg -i optipng -i jpegoptim
-## (slackware already has jpegtran)
+## (slackware already has jpegtran, 
+## although it will check for the mozjpeg version)
 
 read -p "Would you like to BACKUP the original files? [y/N]: " response
 case $response in
@@ -32,6 +33,9 @@ fi
 if [ "$( uname -s )" = Darwin ] && [ ! -z "$( ls /usr/local/Cellar/mozjpeg/ )" ]; then
   find . -name "*.jpg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -outfile {} {} \;
   find . -name "*.jpeg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -outfile {} {} \;
+elif [ ! -z "$( ls /opt/libmozjpeg/bin/ )" ]; then
+  find . -name "*.jpg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -outfile {} {} \;
+  find . -name "*.jpeg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -outfile {} {} \;
 else
   find . -name "*.jpg" -type f -exec jpegtran -verbose -outfile {} {} \;
   find . -name "*.jpeg" -type f -exec jpegtran -verbose -outfile {} {} \;
