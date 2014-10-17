@@ -10,7 +10,7 @@
 ## (slackware already has jpegtran, 
 ## although it will check for the mozjpeg version)
 
-Q=90
+q=90
 
 read -p "Would you like to BACKUP the original files? [y/N]: " response
 case $response in
@@ -43,7 +43,7 @@ else
   find . -name "*.jpeg" -type f -exec jpegtran -verbose -outfile {} {} \;
 fi
 
-find . -name "*.jpg" -type f -exec jpegoptim -m$Q {} \;
-find . -name "*.jpeg" -type f -exec jpegoptim -m$Q {} \;
+find . -name "*.jpg" -type f -exec jpegoptim -m$q {} \;
+find . -name "*.jpeg" -type f -exec jpegoptim -m$q {} \;
 find . -name "*.png" -type f -exec optipng {} \;
 
