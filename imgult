@@ -23,6 +23,7 @@ esac
 if [ "$BACKUPIMAGES" = true ]; then
   mkdir -pv original-image-files/
   find . -name "*.jpg" -type f -exec cp -R {} original-image-files/ \;
+  find . -name "*.jpeg" -type f -exec cp -R {} original-image-files/ \;
   find . -name "*.png" -type f -exec cp -R {} original-image-files/ \;
   mv original-image-files/ ../original-image-files/
 fi
@@ -30,10 +31,13 @@ fi
 
 if [ "$( uname -s )" = Darwin ] && [ ! -z "$( ls /usr/local/Cellar/mozjpeg/ )" ]; then
   find . -name "*.jpg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -outfile {} {} \;
+  find . -name "*.jpeg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -outfile {} {} \;
 else
   find . -name "*.jpg" -type f -exec jpegtran -verbose -outfile {} {} \;
+  find . -name "*.jpeg" -type f -exec jpegtran -verbose -outfile {} {} \;
 fi
 
 find . -name "*.jpg" -type f -exec jpegoptim -m65 {} \;
+find . -name "*.jpeg" -type f -exec jpegoptim -m65 {} \;
 find . -name "*.png" -type f -exec optipng {} \;
 
