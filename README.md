@@ -16,7 +16,7 @@ Before you run it you need these amazing programs!
 
 Linux:
 
-    sbopkg -i optipng -i jpegoptim
+    sbopkg -i jpegoptim -i mozjpeg -i optipng
 
 Mac:
 
