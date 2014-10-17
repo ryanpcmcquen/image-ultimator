@@ -1,6 +1,6 @@
 #!/bin/sh
 
-## mozjpeg, jpegoptim and optipng must all be installed
+## jpegoptim and optipng must all be installed
 ## if you don't have them
 ## 1. shame on you!!
 ## mac
