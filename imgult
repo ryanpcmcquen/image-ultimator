@@ -6,7 +6,7 @@
 ## mac
 ## 2. brew install jpegoptim mozjpeg optipng
 ## linux
-## 2. sbopkg -i optipng -i jpegoptim
+## 2. sbopkg -i jpegoptim -i mozjpeg -i optipng
 ## (slackware already has jpegtran, 
 ## although it will check for the mozjpeg version)
 
