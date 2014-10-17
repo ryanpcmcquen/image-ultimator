@@ -27,3 +27,14 @@ Mac:
 
 Just run this command in any directory with images, note that it will *OVERWRITE* images and loop recursively through all directories INSIDE the directory you run it in.
 
+
+
+##### If it is installed, how do I use it?
+
+ - 'cd' to the directory you want to use it in
+ - Run:
+
+
+    imgult
+
+ - (It will recursively loop through that directory and all subdirectories, updating all JPEGs, JPGs and PNGs).
