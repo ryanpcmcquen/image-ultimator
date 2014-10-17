@@ -3,9 +3,11 @@
 ## mozjpeg, jpegoptim and optipng must all be installed
 ## if you don't have them
 ## 1. shame on you!!
+## mac
 ## 2. brew install jpegoptim mozjpeg optipng
-
-## linux users will compile them  ;^)
+## linux
+## 2. sbopkg -i optipng -i jpegoptim
+## (slackware already has jpegtran)
 
 read -p "Would you like to BACKUP the original files? [y/N]: " response
 case $response in
@@ -25,12 +27,13 @@ if [ "$BACKUPIMAGES" = true ]; then
   mv original-image-files/ ../original-image-files/
 fi
 
-if [ "$( uname -s )" = Darwin ]; then
-  ## mac version
-  find . -name "*.jpg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -outfile {} {} \;
-  find . -name "*.jpg" -type f -exec jpegoptim -m65 {} \;
-  find . -name "*.png" -type f -exec optipng {} \;
+
+if [ "$( uname -s )" = Darwin ] && [ ! -z "$( ls /usr/local/Cellar/mozjpeg/ )" ]; then
+  find . -name "*.jpg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -outfile {} {} \;
 else
-  ## add linux version here
-  echo "coming soon"
+  find . -name "*.jpg" -type f -exec jpegtran -verbose -outfile {} {} \;
 fi
+
+find . -name "*.jpg" -type f -exec jpegoptim -m65 {} \;
+find . -name "*.png" -type f -exec optipng {} \;
+
