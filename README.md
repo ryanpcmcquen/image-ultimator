@@ -25,7 +25,7 @@ Mac:
 
 # USE AT YOUR OWN RISK!
 
-Just run this command in any directory with images, note that it will *OVERWRITE* images and loop recursively through all directories INSIDE the directory you run it in.
+Just run this command in any directory with images, note that it will *OVERWRITE* images (JPEGs, JPGs & PNGs) and loop recursively through all directories INSIDE the directory you run it in.
 
 
 
@@ -36,5 +36,3 @@ Just run this command in any directory with images, note that it will *OVERWRITE
 Run:
 
     imgult
-
- - (It will recursively loop through that directory and all subdirectories, updating all JPEGs, JPGs and PNGs).
