@@ -27,7 +27,7 @@ fi
 
 if [ "$( uname -s )" = Darwin ]; then
   ## mac version
-  find . -name "*.jpg" -type f -exec jpegtran -copy none -optimize -outfile {} {} \;
+  find . -name "*.jpg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -outfile {} {} \;
   find . -name "*.jpg" -type f -exec jpegoptim -m65 {} \;
   find . -name "*.png" -type f -exec optipng {} \;
 else
