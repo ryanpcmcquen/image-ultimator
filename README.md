@@ -32,8 +32,8 @@ Just run this command in any directory with images, note that it will *OVERWRITE
 ##### If it is installed, how do I use it?
 
  - 'cd' to the directory you want to use it in
- - Run:
 
+Run:
 
     imgult
 
