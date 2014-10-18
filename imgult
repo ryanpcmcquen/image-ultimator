@@ -11,7 +11,7 @@
 ## although it will check for the mozjpeg version)
 
 
-${1:-90}
+$1=${1:-90}
 
 read -p "Would you like to BACKUP the original files? [y/N]: " response
 case $response in
