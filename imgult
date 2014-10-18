@@ -10,9 +10,8 @@
 ## (slackware already has jpegtran, 
 ## although it will check for the mozjpeg version)
 
-if [ -z $1 ]; then
-  $1="90"
-fi
+
+${1:-90}
 
 read -p "Would you like to BACKUP the original files? [y/N]: " response
 case $response in
