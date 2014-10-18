@@ -40,6 +40,5 @@ Run:
 
 P.S. You may feed different qualities to imgult by running it like so (0-100, default is 90):
 
-    q=70 imgult
-    imgult q=70
+    imgult 70
 
