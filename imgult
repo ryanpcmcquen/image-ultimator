@@ -11,7 +11,7 @@
 ## although it will check for the mozjpeg version)
 
 if [ -z $1 ]; then
-  $1=90
+  $1="90"
 fi
 
 read -p "Would you like to BACKUP the original files? [y/N]: " response
