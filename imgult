@@ -11,8 +11,6 @@
 ## although it will check for the mozjpeg version)
 
 
-#$1=${1:-90}
-
 read -p "Would you like to BACKUP the original files? [y/N]: " response
 case $response in
   [yY][eE][sS]|[yY])
@@ -45,9 +43,13 @@ else
 fi
 
 if [ -z $1 ]; then
-find . -name "*.jpg" -type f -exec jpegoptim -m90 {} \;
-find . -name "*.jpeg" -type f -exec jpegoptim -m90 {} \;
+  find . -name "*.jpg" -type f -exec jpegoptim -m90 {} \;
+  find . -name "*.jpeg" -type f -exec jpegoptim -m90 {} \;
 else
-find . -name "*.jpg" -type f -exec jpegoptim -m$1 {} \;
-find . -name "*.jpeg" -type f -exec jpegoptim -m$1 {} \;
+  find . -name "*.jpg" -type f -exec jpegoptim -m$1 {} \;
+  find . -name "*.jpeg" -type f -exec jpegoptim -m$1 {} \;
 fi
+
+find . -name "*.png" -type f -exec optipng {} \;
+
+
