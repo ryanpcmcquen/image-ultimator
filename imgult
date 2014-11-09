@@ -22,6 +22,18 @@ case $response in
     ;;
 esac
 
+read -p "Would you like to remove EXIF data? [y/N]: " response
+case $response in
+  [yY][eE][sS]|[yY])
+    export EXIFREMOVE=true;
+    echo "You are removing EXIF, keep it tidy!";
+    ;;
+  *)
+    echo "You like to know the lens used.";
+    ;;
+esac
+
+
 if [ "$BACKUPIMAGES" = true ]; then
   mkdir -pv original-image-files/
   find . -name "*.jpg" -type f -exec cp -R {} original-image-files/ \;
@@ -31,12 +43,21 @@ if [ "$BACKUPIMAGES" = true ]; then
 fi
 
 
-if [ "$( uname -s )" = Darwin ] && [ ! -z "$( ls /usr/local/Cellar/mozjpeg/ )" ]; then
+if [ "$EXIFREMOVE" = true ] && [ "$( uname -s )" = Darwin ] && [ ! -z "$( ls /usr/local/Cellar/mozjpeg/ )" ]; then
+  find . -name "*.jpg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -copy none -outfile {} {} \;
+  find . -name "*.jpeg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -copy none -outfile {} {} \;
+elif [ "$( uname -s )" = Darwin ] && [ ! -z "$( ls /usr/local/Cellar/mozjpeg/ )" ]; then
   find . -name "*.jpg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -outfile {} {} \;
   find . -name "*.jpeg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -outfile {} {} \;
+elif [ "$EXIFREMOVE" = true ] && [ ! -z "$( ls /opt/libmozjpeg/bin/ )" ]; then
+  find . -name "*.jpg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -copy none -outfile {} {} \;
+  find . -name "*.jpeg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -copy none -outfile {} {} \;
 elif [ ! -z "$( ls /opt/libmozjpeg/bin/ )" ]; then
   find . -name "*.jpg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -outfile {} {} \;
   find . -name "*.jpeg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -outfile {} {} \;
+elif [ "$EXIFREMOVE" = true ]; then
+  find . -name "*.jpg" -type f -exec jpegtran -verbose -copy none -outfile {} {} \;
+  find . -name "*.jpeg" -type f -exec jpegtran -verbose -copy none -outfile {} {} \;
 else
   find . -name "*.jpg" -type f -exec jpegtran -verbose -outfile {} {} \;
   find . -name "*.jpeg" -type f -exec jpegtran -verbose -outfile {} {} \;
@@ -50,6 +71,9 @@ else
   find . -name "*.jpeg" -type f -exec jpegoptim -m$1 {} \;
 fi
 
-find . -name "*.png" -type f -exec optipng {} \;
-
+if [ "$EXIFREMOVE" = true ]; then
+  find . -name "*.png" -type f -exec optipng -strip all {} \;
+else
+  find . -name "*.png" -type f -exec optipng {} \;
+fi
 
