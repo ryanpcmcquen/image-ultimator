@@ -1,6 +1,10 @@
 image-ultimator
 ===============
 
+##What is it?
+imgult is a tiny and mighty script that will recursively loop through a directory and its subdirectories optimizing all JPGs, JPEGs and PNGs. It also has the option to remove EXIF data.
+
+
 #### I just want to run it once (it will remove itself):
 
     wget -N https://raw.githubusercontent.com/ryanpcmcquen/image-ultimator/master/imgult; sh imgult; rm imgult
@@ -25,7 +29,7 @@ Mac:
 
 # USE AT YOUR OWN RISK!
 
-Just run this command in any directory with images, note that it will *OVERWRITE* images (JPEGs, JPGs & PNGs) and loop recursively through all directories INSIDE the directory you run it in.
+Just run this command in any directory with images, note that it will *OVERWRITE* images (JPEGs, JPGs & PNGs) and loop recursively through all directories INSIDE the directory you run it in. There is a BACKUP option though.  ;^)
 
 
 
