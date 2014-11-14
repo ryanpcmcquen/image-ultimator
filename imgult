@@ -35,11 +35,11 @@ esac
 
 
 if [ "$BACKUPIMAGES" = true ]; then
-  mkdir -pv original-image-files/
-  find . -name "*.jpg" -type f -exec cp -R {} original-image-files/ \;
-  find . -name "*.jpeg" -type f -exec cp -R {} original-image-files/ \;
-  find . -name "*.png" -type f -exec cp -R {} original-image-files/ \;
-  mv original-image-files/ ../original-image-files/
+  mkdir -pv imgult-backup-files/
+  find . -name "*.jpg" -type f -exec cp -R {} imgult-backup-files/ \;
+  find . -name "*.jpeg" -type f -exec cp -R {} imgult-backup-files/ \;
+  find . -name "*.png" -type f -exec cp -R {} imgult-backup-files/ \;
+  mv imgult-backup-files/ ../imgult-backup-files/
 fi
 
 
