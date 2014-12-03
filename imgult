@@ -43,16 +43,16 @@ if [ "$BACKUPIMAGES" = true ]; then
 fi
 
 
-if [ "$EXIFREMOVE" = true ] && [ "$( uname -s )" = Darwin ] && [ ! -z "$( ls /usr/local/Cellar/mozjpeg/ )" ]; then
+if [ "$EXIFREMOVE" = true ] && [ "$( uname -s )" = Darwin ] && [ -d /usr/local/Cellar/mozjpeg/ ]; then
   find . -name "*.jpg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -copy none -outfile {} {} \;
   find . -name "*.jpeg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -copy none -outfile {} {} \;
-elif [ "$( uname -s )" = Darwin ] && [ ! -z "$( ls /usr/local/Cellar/mozjpeg/ )" ]; then
+elif [ "$( uname -s )" = Darwin ] && [ -d /usr/local/Cellar/mozjpeg/ ]; then
   find . -name "*.jpg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -outfile {} {} \;
   find . -name "*.jpeg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -outfile {} {} \;
-elif [ "$EXIFREMOVE" = true ] && [ ! -z "$( ls /opt/libmozjpeg/bin/ )" ]; then
+elif [ "$EXIFREMOVE" = true ] && [ -d /opt/libmozjpeg/bin/ ]; then
   find . -name "*.jpg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -copy none -outfile {} {} \;
   find . -name "*.jpeg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -copy none -outfile {} {} \;
-elif [ ! -z "$( ls /opt/libmozjpeg/bin/ )" ]; then
+elif [ -d /opt/libmozjpeg/bin/ ]; then
   find . -name "*.jpg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -outfile {} {} \;
   find . -name "*.jpeg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -outfile {} {} \;
 elif [ "$EXIFREMOVE" = true ]; then
