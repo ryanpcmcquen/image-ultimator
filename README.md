@@ -20,11 +20,11 @@ Before you run it you need these amazing programs!
 
 Linux:
 
-    sbopkg -i jpegoptim -i mozjpeg -i optipng
+    sbopkg -i jpegoptim -i mozjpeg -i optipng -i gifsicle
 
 Mac:
 
-    brew install jpegoptim mozjpeg optipng
+    brew install jpegoptim mozjpeg optipng gifsicle
 
 
 # USE AT YOUR OWN RISK!
@@ -46,3 +46,7 @@ P.S. You may feed different qualities to imgult by running it like so (0-100, de
 
     imgult 70
 
+
+##### EXIF removal
+
+There is preliminary exif removal support, you will be prompted when you run the script. Only works for jpg, jpeg & png.
