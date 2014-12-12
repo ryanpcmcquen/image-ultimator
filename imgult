@@ -4,9 +4,9 @@
 ## if you don't have them
 ## 1. shame on you!!
 ## mac
-## 2. brew install jpegoptim mozjpeg optipng
+## 2. brew install jpegoptim mozjpeg optipng gifsicle
 ## linux
-## 2. sbopkg -i jpegoptim -i mozjpeg -i optipng
+## 2. sbopkg -i jpegoptim -i mozjpeg -i optipng -i gifsicle
 ## (slackware already has jpegtran, 
 ## although it will check for the mozjpeg version)
 
@@ -39,6 +39,7 @@ if [ "$BACKUPIMAGES" = true ]; then
   find . -name "*.jpg" -type f -exec cp -R {} imgult-backup-files/ \;
   find . -name "*.jpeg" -type f -exec cp -R {} imgult-backup-files/ \;
   find . -name "*.png" -type f -exec cp -R {} imgult-backup-files/ \;
+  find . -name "*.gif" -type f -exec cp -R {} imgult-backup-files/ \;
   mv imgult-backup-files/ ../imgult-backup-files/
 fi
 
@@ -76,4 +77,6 @@ if [ "$EXIFREMOVE" = true ]; then
 else
   find . -name "*.png" -type f -exec optipng {} \;
 fi
+
+find . -name "*.gif" -type f -exec gifsicle -03 {} \;
 
