@@ -78,5 +78,7 @@ else
   find . -name "*.png" -type f -exec optipng {} \;
 fi
 
-find . -name "*.gif" -type f -exec gifsicle -03 {} \;
+## -b keeps the filename, -O3 uses highest optimization level
+## it is an 'O' as in odd, not a zero
+find . -name "*.gif" -type f -exec gifsicle -b -O3 {} \;
 
