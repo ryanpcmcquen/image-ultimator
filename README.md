@@ -52,3 +52,15 @@ P.S. You may feed different qualities to imgult by running it like so (0-100, de
 There is preliminary exif removal support, you will be prompted when you run the script. Only works for jpg, jpeg & png. Default is to remove exif data, to keep it, run:
 
     EXIFREMOVE=n imgult
+
+
+##### BACKUPs
+
+To back up all original images to ```../imgult-backup-files/```, run:
+
+    BACKUPIMAGES=true imgult
+
+This can be run with the EXIF option as well:
+
+    EXIFREMOVE=n BACKUPIMAGES=true imgult
+
