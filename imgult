@@ -10,22 +10,24 @@
 ## (slackware already has jpegtran, 
 ## although it will check for the mozjpeg version)
 
+BACKUPIMAGES=n
+EXIFREMOVE=true
 
-read -p "Would you like to BACKUP the original files? [y/N]: " response
-case $response in
-  [yY][eE][sS]|[yY])
-    export BACKUPIMAGES=true;
-    echo "You are backing things up, better safe than sorry!";
-    ;;
-  *)
-    echo "You are a risk taker.";
-    ;;
-esac
+#read -p "Would you like to BACKUP the original files? [y/N]: " response
+#case $response in
+#  [yY][eE][sS]|[yY])
+#    export BACKUPIMAGES=true;
+#    echo "You are backing things up, better safe than sorry!";
+#    ;;
+#  *)
+#    echo "You are a risk taker.";
+#    ;;
+#esac
 
 #read -p "Would you like to remove EXIF data? [y/N]: " response
 #case $response in
 #  [yY][eE][sS]|[yY])
-    export EXIFREMOVE=true;
+#    export EXIFREMOVE=true;
 #    echo "You are removing EXIF, keep it tidy!";
 #    ;;
 #  *)
