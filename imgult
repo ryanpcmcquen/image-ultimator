@@ -22,16 +22,16 @@ case $response in
     ;;
 esac
 
-read -p "Would you like to remove EXIF data? [y/N]: " response
-case $response in
-  [yY][eE][sS]|[yY])
+#read -p "Would you like to remove EXIF data? [y/N]: " response
+#case $response in
+#  [yY][eE][sS]|[yY])
     export EXIFREMOVE=true;
-    echo "You are removing EXIF, keep it tidy!";
-    ;;
-  *)
-    echo "You like to know the lens used.";
-    ;;
-esac
+#    echo "You are removing EXIF, keep it tidy!";
+#    ;;
+#  *)
+#    echo "You like to know the lens used.";
+#    ;;
+#esac
 
 
 if [ "$BACKUPIMAGES" = true ]; then
