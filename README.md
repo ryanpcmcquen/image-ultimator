@@ -49,4 +49,6 @@ P.S. You may feed different qualities to imgult by running it like so (0-100, de
 
 ##### EXIF removal
 
-There is preliminary exif removal support, you will be prompted when you run the script. Only works for jpg, jpeg & png.
+There is preliminary exif removal support, you will be prompted when you run the script. Only works for jpg, jpeg & png. Default is to remove exif data, to keep it, run:
+
+    EXIFREMOVE=n imgult
