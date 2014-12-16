@@ -35,52 +35,53 @@ EXIFREMOVE=true
 #    ;;
 #esac
 
+find . -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname \
+  '*.gif' -o -iname '*.png' \) > imgult-files.txt
+
 
 if [ "$BACKUPIMAGES" = true ]; then
   mkdir -pv imgult-backup-files/
-  find . -name "*.jpg" -type f -exec cp -R {} imgult-backup-files/ \;
-  find . -name "*.jpeg" -type f -exec cp -R {} imgult-backup-files/ \;
-  find . -name "*.png" -type f -exec cp -R {} imgult-backup-files/ \;
-  find . -name "*.gif" -type f -exec cp -R {} imgult-backup-files/ \;
-  mv imgult-backup-files/ ../imgult-backup-files/
+  cp -Rv $( cat imgult-files.txt ) ../imgult-backup-files/
+  mv -v imgult-backup-files/ ../imgult-backup-files/
 fi
 
 
 if [ "$EXIFREMOVE" = true ] && [ "$( uname -s )" = Darwin ] && [ -d /usr/local/Cellar/mozjpeg/ ]; then
-  find . -name "*.jpg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -copy none -outfile {} {} \;
-  find . -name "*.jpeg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -copy none -outfile {} {} \;
+  find . -iname "*.jpg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -copy none -outfile {} {} \;
+  find . -iname "*.jpeg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -copy none -outfile {} {} \;
 elif [ "$( uname -s )" = Darwin ] && [ -d /usr/local/Cellar/mozjpeg/ ]; then
-  find . -name "*.jpg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -outfile {} {} \;
-  find . -name "*.jpeg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -outfile {} {} \;
+  find . -iname "*.jpg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -outfile {} {} \;
+  find . -iname "*.jpeg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -outfile {} {} \;
 elif [ "$EXIFREMOVE" = true ] && [ -d /opt/libmozjpeg/bin/ ]; then
-  find . -name "*.jpg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -copy none -outfile {} {} \;
-  find . -name "*.jpeg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -copy none -outfile {} {} \;
+  find . -iname "*.jpg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -copy none -outfile {} {} \;
+  find . -iname "*.jpeg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -copy none -outfile {} {} \;
 elif [ -d /opt/libmozjpeg/bin/ ]; then
-  find . -name "*.jpg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -outfile {} {} \;
-  find . -name "*.jpeg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -outfile {} {} \;
+  find . -iname "*.jpg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -outfile {} {} \;
+  find . -iname "*.jpeg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -outfile {} {} \;
 elif [ "$EXIFREMOVE" = true ]; then
-  find . -name "*.jpg" -type f -exec jpegtran -verbose -copy none -outfile {} {} \;
-  find . -name "*.jpeg" -type f -exec jpegtran -verbose -copy none -outfile {} {} \;
+  find . -iname "*.jpg" -type f -exec jpegtran -verbose -copy none -outfile {} {} \;
+  find . -iname "*.jpeg" -type f -exec jpegtran -verbose -copy none -outfile {} {} \;
 else
-  find . -name "*.jpg" -type f -exec jpegtran -verbose -outfile {} {} \;
-  find . -name "*.jpeg" -type f -exec jpegtran -verbose -outfile {} {} \;
+  find . -iname "*.jpg" -type f -exec jpegtran -verbose -outfile {} {} \;
+  find . -iname "*.jpeg" -type f -exec jpegtran -verbose -outfile {} {} \;
 fi
 
 if [ -z $1 ]; then
-  find . -name "*.jpg" -type f -exec jpegoptim -m90 {} \;
-  find . -name "*.jpeg" -type f -exec jpegoptim -m90 {} \;
+  find . -iname "*.jpg" -type f -exec jpegoptim -m90 {} \;
+  find . -iname "*.jpeg" -type f -exec jpegoptim -m90 {} \;
 else
-  find . -name "*.jpg" -type f -exec jpegoptim -m$1 {} \;
-  find . -name "*.jpeg" -type f -exec jpegoptim -m$1 {} \;
+  find . -iname "*.jpg" -type f -exec jpegoptim -m$1 {} \;
+  find . -iname "*.jpeg" -type f -exec jpegoptim -m$1 {} \;
 fi
 
+
 if [ "$EXIFREMOVE" = true ]; then
-  find . -name "*.png" -type f -exec optipng -strip all {} \;
+  find . -iname "*.png" -type f -exec optipng -strip all {} \;
 else
-  find . -name "*.png" -type f -exec optipng {} \;
+  find . -iname "*.png" -type f -exec optipng {} \;
 fi
 
 ## -b keeps the filename, -O3 uses highest optimization level
-## it is an 'O' as in odd, not a zero
-find . -name "*.gif" -type f -exec gifsicle -b -O3 {} \;
+## it is an 'O' as in Oxford, not a zero (0)
+find . -iname "*.gif" -type f -exec gifsicle -b -O3 {} \;
 
