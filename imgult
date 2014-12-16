@@ -1,6 +1,8 @@
 #!/bin/sh
 
-## jpegoptim and optipng must all be installed
+## jpegoptim, optipng, gifsicle and some jpegtran (preferably mozjpeg)
+## must all be installed
+##
 ## if you don't have them
 ## 1. shame on you!!
 ## mac
@@ -13,31 +15,24 @@
 BACKUPIMAGES=n
 EXIFREMOVE=true
 
-#read -p "Would you like to BACKUP the original files? [y/N]: " response
-#case $response in
-#  [yY][eE][sS]|[yY])
-#    export BACKUPIMAGES=true;
-#    echo "You are backing things up, better safe than sorry!";
-#    ;;
-#  *)
-#    echo "You are a risk taker.";
-#    ;;
-#esac
+OPTLEVEL=${1:-90}
 
-#read -p "Would you like to remove EXIF data? [y/N]: " response
-#case $response in
-#  [yY][eE][sS]|[yY])
-#    export EXIFREMOVE=true;
-#    echo "You are removing EXIF, keep it tidy!";
-#    ;;
-#  *)
-#    echo "You like to know the lens used.";
-#    ;;
-#esac
+if [ "$EXIFREMOVE" = "true" ]; then
+  EXTRAJTRANARGS="-copy none"
+  EXTRAOPTPNARGS="-strip all"
+fi
+
+if [ -z "$JPEGTRAN" ]; then
+  export PATH=/usr/local/Cellar/mozjpeg/*/bin:/opt/libmozjpeg/bin:$PATH
+  JPEGTRAN="$( which jpegtran )"
+  if [ -z "$JPEGTRAN" ]; then
+    echo "Can't find jpegtran in $PATH, install it or set JPEGTRAN in the environment"
+    exit 1
+  fi
+fi
 
 find . -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname \
   '*.gif' -o -iname '*.png' \) > imgult-files.txt
-
 
 if [ "$BACKUPIMAGES" = true ]; then
   mkdir -pv imgult-backup-files/
@@ -45,43 +40,14 @@ if [ "$BACKUPIMAGES" = true ]; then
   mv -v imgult-backup-files/ ../imgult-backup-files/
 fi
 
+$JPEGTRAN -verbose $EXTRAJTRANARGS $( grep {*.jpg,*.jpeg} imgult-files.txt )
 
-if [ "$EXIFREMOVE" = true ] && [ "$( uname -s )" = Darwin ] && [ -d /usr/local/Cellar/mozjpeg/ ]; then
-  find . -iname "*.jpg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -copy none -outfile {} {} \;
-  find . -iname "*.jpeg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -copy none -outfile {} {} \;
-elif [ "$( uname -s )" = Darwin ] && [ -d /usr/local/Cellar/mozjpeg/ ]; then
-  find . -iname "*.jpg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -outfile {} {} \;
-  find . -iname "*.jpeg" -type f -exec /usr/local/Cellar/mozjpeg/2.1/bin/jpegtran -verbose -outfile {} {} \;
-elif [ "$EXIFREMOVE" = true ] && [ -d /opt/libmozjpeg/bin/ ]; then
-  find . -iname "*.jpg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -copy none -outfile {} {} \;
-  find . -iname "*.jpeg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -copy none -outfile {} {} \;
-elif [ -d /opt/libmozjpeg/bin/ ]; then
-  find . -iname "*.jpg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -outfile {} {} \;
-  find . -iname "*.jpeg" -type f -exec /opt/libmozjpeg/bin/jpegtran -verbose -outfile {} {} \;
-elif [ "$EXIFREMOVE" = true ]; then
-  find . -iname "*.jpg" -type f -exec jpegtran -verbose -copy none -outfile {} {} \;
-  find . -iname "*.jpeg" -type f -exec jpegtran -verbose -copy none -outfile {} {} \;
-else
-  find . -iname "*.jpg" -type f -exec jpegtran -verbose -outfile {} {} \;
-  find . -iname "*.jpeg" -type f -exec jpegtran -verbose -outfile {} {} \;
-fi
+jpegoptim -m$OPTLEVEL $( grep {*.jpg,*.jpeg} imgult-files.txt )
 
-if [ -z $1 ]; then
-  find . -iname "*.jpg" -type f -exec jpegoptim -m90 {} \;
-  find . -iname "*.jpeg" -type f -exec jpegoptim -m90 {} \;
-else
-  find . -iname "*.jpg" -type f -exec jpegoptim -m$1 {} \;
-  find . -iname "*.jpeg" -type f -exec jpegoptim -m$1 {} \;
-fi
-
-
-if [ "$EXIFREMOVE" = true ]; then
-  find . -iname "*.png" -type f -exec optipng -strip all {} \;
-else
-  find . -iname "*.png" -type f -exec optipng {} \;
-fi
+optipng $EXTRAOPTIPNARGS $( grep *.png imgult-files.txt )
 
 ## -b keeps the filename, -O3 uses highest optimization level
 ## it is an 'O' as in Oxford, not a zero (0)
-find . -iname "*.gif" -type f -exec gifsicle -b -O3 {} \;
+gifsicle -b -O3 $( grep *.png imgult-files.txt )
 
+rm imgult-files.txt
