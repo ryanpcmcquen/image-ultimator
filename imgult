@@ -40,11 +40,9 @@ if [ "$BACKUPIMAGES" = true ]; then
   mv -v imgult-backup-files/ ../imgult-backup-files/
 fi
 
-$JPEGTRAN -verbose $EXTRAJTRANARGS -outfile $( grep -i .jpg imgult-files.txt )
-$JPEGTRAN -verbose $EXTRAJTRANARGS -outfile $( grep -i .jpeg imgult-files.txt )
+$JPEGTRAN -verbose $EXTRAJTRANARGS -outfile $( grep -i .[jpg,jpeg] imgult-files.txt ) $0
 
-jpegoptim -m$OPTLEVEL $( grep -i .jpg imgult-files.txt )
-jpegoptim -m$OPTLEVEL $( grep -i .jpeg imgult-files.txt )
+jpegoptim -m$OPTLEVEL $( grep -i .[jpg,jpeg] imgult-files.txt )
 
 optipng $EXTRAOPTIPNARGS $( grep -i .png imgult-files.txt )
 
@@ -53,3 +51,5 @@ optipng $EXTRAOPTIPNARGS $( grep -i .png imgult-files.txt )
 gifsicle -b -O3 $( grep -i .gif imgult-files.txt )
 
 rm imgult-files.txt
+
+
