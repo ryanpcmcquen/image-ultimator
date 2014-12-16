@@ -40,14 +40,14 @@ if [ "$BACKUPIMAGES" = true ]; then
   mv -v imgult-backup-files/ ../imgult-backup-files/
 fi
 
-$JPEGTRAN -verbose $EXTRAJTRANARGS $( grep {*.jpg,*.jpeg} imgult-files.txt )
+$JPEGTRAN -verbose $EXTRAJTRANARGS $( grep {.jpg,.jpeg} imgult-files.txt )
 
-jpegoptim -m$OPTLEVEL $( grep {*.jpg,*.jpeg} imgult-files.txt )
+jpegoptim -m$OPTLEVEL $( grep {.jpg,.jpeg} imgult-files.txt )
 
-optipng $EXTRAOPTIPNARGS $( grep *.png imgult-files.txt )
+optipng $EXTRAOPTIPNARGS $( grep .png imgult-files.txt )
 
 ## -b keeps the filename, -O3 uses highest optimization level
 ## it is an 'O' as in Oxford, not a zero (0)
-gifsicle -b -O3 $( grep *.png imgult-files.txt )
+gifsicle -b -O3 $( grep .gif imgult-files.txt )
 
 rm imgult-files.txt
