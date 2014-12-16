@@ -40,8 +40,8 @@ if [ "$BACKUPIMAGES" = true ]; then
   mv -v imgult-backup-files/ ../imgult-backup-files/
 fi
 
-$JPEGTRAN -verbose $EXTRAJTRANARGS $( grep -i .jpg imgult-files.txt ) > $2
-$JPEGTRAN -verbose $EXTRAJTRANARGS $( grep -i .jpeg imgult-files.txt ) > $2
+$JPEGTRAN -verbose $EXTRAJTRANARGS -outfile $( grep -i .jpg imgult-files.txt )
+$JPEGTRAN -verbose $EXTRAJTRANARGS -outfile $( grep -i .jpeg imgult-files.txt )
 
 jpegoptim -m$OPTLEVEL $( grep -i .jpg imgult-files.txt )
 jpegoptim -m$OPTLEVEL $( grep -i .jpeg imgult-files.txt )
