@@ -1,8 +1,8 @@
 image-ultimator
 ===============
 
-##What is it?
-imgult is a tiny and mighty script that will recursively loop through a directory and its subdirectories optimizing all JPGs, JPEGs and PNGs. It also has the option to remove EXIF data.
+## What is it?
+imgult is a tiny and mighty script that will recursively loop through a directory and its subdirectories optimizing all GIFs, JPGs, JPEGs and PNGs. It also has the option to remove EXIF data.
 
 
 #### I just want to run it once (it will remove itself):
