@@ -12,8 +12,8 @@
 ## (slackware already has jpegtran, 
 ## although it will check for the mozjpeg version)
 
-BACKUPIMAGES=n
-EXIFREMOVE=true
+BACKUPIMAGES=${BACKUPIMAGES:-false}
+EXIFREMOVE=${EXIFREMOVE:-true}
 
 OPTLEVEL=${1:-90}
 
@@ -35,9 +35,7 @@ find . -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname \
   '*.gif' -o -iname '*.png' \) > imgult-files.txt
 
 if [ "$BACKUPIMAGES" = true ]; then
-  mkdir -pv imgult-backup-files/
-  rsync -avz $( cat imgult-files.txt ) ../imgult-backup-files/
-  mv -v imgult-backup-files/ ../imgult-backup-files/
+  rsync -avz --files-from=imgult-files.txt $PWD ../imgult-backup-files/
 fi
 
 grep -i 'jpe\?g$' imgult-files.txt | while read file; do
