@@ -36,7 +36,7 @@ find . -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname \
 
 if [ "$BACKUPIMAGES" = true ]; then
   mkdir -pv imgult-backup-files/
-  cp -Rv $( cat imgult-files.txt ) ../imgult-backup-files/
+  rsync -avz $( cat imgult-files.txt ) ../imgult-backup-files/
   mv -v imgult-backup-files/ ../imgult-backup-files/
 fi
 
