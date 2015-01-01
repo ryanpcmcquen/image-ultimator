@@ -12,9 +12,13 @@
 ## (slackware already has jpegtran, 
 ## although it will check for the mozjpeg version)
 
+## prepend imgult on the command line with
+## BACKUPIMAGES=true  (to back everything up)
+## EXIFREMOVE=n  (to keep EXIF data)
 BACKUPIMAGES=${BACKUPIMAGES:-false}
 EXIFREMOVE=${EXIFREMOVE:-true}
 
+## fancy syntax thanks to B. Watson
 OPTLEVEL=${1:-90}
 
 if [ "$EXIFREMOVE" = "true" ]; then
