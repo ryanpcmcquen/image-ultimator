@@ -2,10 +2,10 @@ image-ultimator
 ===============
 
 ## What is it?
-imgult is a tiny and mighty script that will recursively loop through a directory and its subdirectories optimizing all GIFs, JPGs, JPEGs and PNGs. It also has the option to remove EXIF data.
+imgult is a tiny and mighty script that will recursively loop through a directory and its subdirectories optimizing all GIFs, JPGs, JPEGs and PNGs. It also removes EXIF data from JPGs, JPEGs and PNGs (run with ```EXIFREMOVE=n``` to keep it). You can backup the images by running it with (```BACKUPIMAGES=true```).
 
 
-#### I just want to run it once (it will remove itself):
+#### I just want to run it once (it will kindly remove itself):
 
     wget -N https://raw.githubusercontent.com/ryanpcmcquen/image-ultimator/master/imgult; sh imgult; rm imgult
 
@@ -29,7 +29,7 @@ Mac:
 
 # USE AT YOUR OWN RISK!
 
-Just run this command in any directory with images, note that it will *OVERWRITE* images (JPEGs, JPGs & PNGs) and loop recursively through all directories INSIDE the directory you run it in. There is a BACKUP option though.  ;^)
+Just run this command in any directory with images, note that it will *OVERWRITE* images (GIFs, JPEGs, JPGs & PNGs) and loop recursively through all directories INSIDE the directory you run it in. There is a BACKUP option though.  ;^)
 
 
 
@@ -49,7 +49,7 @@ P.S. You may feed different qualities to imgult by running it like so (0-100, de
 
 ##### EXIF removal
 
-There is preliminary exif removal support, you will be prompted when you run the script. Only works for jpg, jpeg & png. Default is to remove exif data, to keep it, run:
+There is exif removal support. Only works for JPG, JPEG & PNG. Default is to remove exif data, to keep EXIF data, run:
 
     EXIFREMOVE=n imgult
 
