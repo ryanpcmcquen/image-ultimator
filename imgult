@@ -46,7 +46,7 @@ if [ "$EXIFREMOVE" = "true" ]; then
   if [ ! -z "$( which exiftool )" ]; then
     cat imgult-files.txt | \
       while read IMGULT_FILE;
-      do exiftool -overwrite_original -all= $IMGULT_FILE;
+      do exiftool -overwrite_original -all= "$IMGULT_FILE";
     done
   fi
 fi
