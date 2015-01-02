@@ -2,7 +2,7 @@ image-ultimator
 ===============
 
 ## What is it?
-imgult is a tiny and mighty script that will recursively loop through a directory and its subdirectories optimizing all GIFs, JPGs, JPEGs and PNGs. It also removes EXIF data from JPGs, JPEGs and PNGs (run with ```EXIFREMOVE=n``` to keep it). You can backup the images by running it with (```BACKUPIMAGES=true```).
+imgult is a tiny and mighty script that will recursively loop through a directory and its subdirectories optimizing all GIFs, JPGs, JPEGs and PNGs. It also removes EXIF data (run with ```EXIFREMOVE=n``` to keep EXIF data). You can backup the images by running it with (```BACKUPIMAGES=true```).
 
 
 #### I just want to run it once (it will kindly remove itself):
@@ -20,11 +20,11 @@ Before you run it you need these amazing programs!
 
 Linux:
 
-    sbopkg -i jpegoptim -i mozjpeg -i optipng -i gifsicle
+    sbopkg -i jpegoptim -i mozjpeg -i optipng -i gifsicle -i exiftool
 
 Mac:
 
-    brew install jpegoptim mozjpeg optipng gifsicle
+    brew install jpegoptim mozjpeg optipng gifsicle exiftool
 
 
 # USE AT YOUR OWN RISK!
@@ -49,7 +49,9 @@ P.S. You may feed different qualities to imgult by running it like so (0-100, de
 
 ##### EXIF removal
 
-There is exif removal support. Only works for JPG, JPEG & PNG. Default is to remove exif data, to keep EXIF data, run:
+There is exif removal support (exiftool is supported but not required, the script will check if you have it). The script will attempt to use the built in exif removal from optipng and jpegtran, but exiftool is recommended if you really want to take advantage of this feature.
+
+Default is to remove exif data, to keep EXIF data, run:
 
     EXIFREMOVE=n imgult
 
