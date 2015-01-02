@@ -5,10 +5,10 @@
 ##
 ## if you don't have them
 ## 1. shame on you!!
-## mac
-## 2. brew install jpegoptim mozjpeg optipng gifsicle exiftool
 ## linux
-## 2. sbopkg -i jpegoptim -i mozjpeg -i optipng -i gifsicle -i exiftool
+## 2. sbopkg -i jpegoptim -i mozjpeg -i optipng -i pngquant -i gifsicle -i exiftool
+## mac
+## 2. brew install jpegoptim mozjpeg optipng pngquant gifsicle exiftool
 ## (slackware already has jpegtran, 
 ## although it will check for the mozjpeg version)
 
