@@ -21,11 +21,6 @@ EXIFREMOVE=${EXIFREMOVE:-true}
 ## fancy syntax thanks to B. Watson
 OPTLEVEL=${1:-90}
 
-if [ "$EXIFREMOVE" = "true" ]; then
-  EXTRAJTRANARGS="-copy none"
-  EXTRAOPTPNARGS="-strip all"
-fi
-
 if [ -z "$JPEGTRAN" ]; then
   export PATH=/usr/local/Cellar/mozjpeg/*/bin:/opt/libmozjpeg/bin:$PATH
   JPEGTRAN="$( which jpegtran )"
@@ -38,8 +33,18 @@ fi
 find . -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname \
   '*.gif' -o -iname '*.png' \) > imgult-files.txt
 
+## back it up!
 if [ "$BACKUPIMAGES" = true ]; then
   rsync -avz --files-from=imgult-files.txt $PWD ../imgult-backup-files/
+fi
+
+## clear out that exif!
+if [ "$EXIFREMOVE" = "true" ]; then
+  EXTRAJTRANARGS="-copy none"
+  EXTRAOPTPNARGS="-strip all"
+  if [ -e exiftool ]; then
+    cat imgult-files.txt | while read IMGULT_FILE; do exiftool -overwrite_original -all= $IMGULT_FILE; done
+  fi
 fi
 
 grep -i 'jpe\?g$' imgult-files.txt | while read file; do
