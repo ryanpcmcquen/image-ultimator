@@ -6,9 +6,9 @@
 ## if you don't have them
 ## 1. shame on you!!
 ## mac
-## 2. brew install jpegoptim mozjpeg optipng gifsicle
+## 2. brew install jpegoptim mozjpeg optipng gifsicle exiftool
 ## linux
-## 2. sbopkg -i jpegoptim -i mozjpeg -i optipng -i gifsicle
+## 2. sbopkg -i jpegoptim -i mozjpeg -i optipng -i gifsicle -i exiftool
 ## (slackware already has jpegtran, 
 ## although it will check for the mozjpeg version)
 
@@ -39,10 +39,11 @@ if [ "$BACKUPIMAGES" = true ]; then
 fi
 
 ## clear out that exif!
+## detects and uses exiftool if available
 if [ "$EXIFREMOVE" = "true" ]; then
   EXTRAJTRANARGS="-copy none"
   EXTRAOPTPNARGS="-strip all"
-  if [ -e exiftool ]; then
+  if [ ! -z "$( which exiftool )" ]; then
     cat imgult-files.txt | while read IMGULT_FILE; do exiftool -overwrite_original -all= $IMGULT_FILE; done
   fi
 fi
