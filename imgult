@@ -57,7 +57,7 @@ grep -i 'jpe\?g$' imgult-files.txt | while read IMGULT_FILE; do
 done
 
 grep -i 'png$' imgult-files.txt | while read IMGULT_FILE; do
-  optipng $EXTRAOPTIPNARGS "$file"
+  optipng $EXTRAOPTIPNARGS "$IMGULT_FILE"
   pngquant --quality=70-99 -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE"
 done
 
