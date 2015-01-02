@@ -20,11 +20,11 @@ Before you run it you need these amazing programs!
 
 Linux:
 
-    sbopkg -i jpegoptim -i mozjpeg -i optipng -i gifsicle -i exiftool
+    sbopkg -i jpegoptim -i mozjpeg -i optipng -i pngquant -i gifsicle -i exiftool
 
 Mac:
 
-    brew install jpegoptim mozjpeg optipng gifsicle exiftool
+    brew install jpegoptim mozjpeg optipng pngquant gifsicle exiftool
 
 
 # USE AT YOUR OWN RISK!
@@ -42,7 +42,7 @@ Run:
     imgult
 
 
-P.S. You may feed different qualities to imgult by running it like so (0-100, default is 90):
+P.S. You may feed different qualities to imgult by running it like so (0-100, default is 90, only applies to JPGs & JPEGs):
 
     imgult 70
 
