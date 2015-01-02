@@ -44,23 +44,27 @@ if [ "$EXIFREMOVE" = "true" ]; then
   EXTRAJTRANARGS="-copy none"
   EXTRAOPTPNARGS="-strip all"
   if [ ! -z "$( which exiftool )" ]; then
-    cat imgult-files.txt | while read IMGULT_FILE; do exiftool -overwrite_original -all= $IMGULT_FILE; done
+    cat imgult-files.txt | \
+      while read IMGULT_FILE;
+      do exiftool -overwrite_original -all= $IMGULT_FILE;
+    done
   fi
 fi
 
-grep -i 'jpe\?g$' imgult-files.txt | while read file; do
-  $JPEGTRAN -verbose $EXTRAJTRANARGS -outfile "$file" "$file"
-  jpegoptim -m$OPTLEVEL "$file"
+grep -i 'jpe\?g$' imgult-files.txt | while read IMGULT_FILE; do
+  $JPEGTRAN -verbose $EXTRAJTRANARGS -outfile "$IMGULT_FILE" "$IMGULT_FILE"
+  jpegoptim -m$OPTLEVEL "$IMGULT_FILE"
 done
 
-grep -i 'png$' imgult-files.txt | while read file; do
+grep -i 'png$' imgult-files.txt | while read IMGULT_FILE; do
   optipng $EXTRAOPTIPNARGS "$file"
+  pngquant --quality=70-99 -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE"
 done
 
 ## -b keeps the filename, -O3 uses highest optimization level
 ## it is an 'O' as in Oxford, not a zero (0)
-grep -i 'gif$' imgult-files.txt | while read file; do
-  gifsicle -b -O3 "$file"
+grep -i 'gif$' imgult-files.txt | while read IMGULT_FILE; do
+  gifsicle -b -O3 "$IMGULT_FILE"
 done
 
 rm imgult-files.txt
