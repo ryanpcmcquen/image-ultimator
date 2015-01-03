@@ -43,7 +43,7 @@ find . -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.jpe' \
 
 ## back it up!
 if [ "$BACKUPIMAGES" = true ]; then
-  rsync -avz --files-from=imgult-files.txt $PWD ../imgult-backup-files/
+  rsync -avz --files-from=imgult-files.txt $PWD imgult-backup-files/
 fi
 
 ## clear out that exif!
