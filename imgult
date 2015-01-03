@@ -53,7 +53,10 @@ if [ "$EXIFREMOVE" = "true" ]; then
   fi
 fi
 
-grep -i 'jpe\?g$' imgult-files.txt | while read IMGULT_FILE; do
+grep -i 'jpe\?g$' imgult-files.txt && grep -i 'jpe$' imgult-files.txt && \
+  grep -i 'jif$' imgult-files.txt && grep -i 'jfif$' imgult-files.txt && \
+  grep -i 'jfi$' imgult-files.txt && grep -i 'thm$'imgult-files.txt \
+  | while read IMGULT_FILE; do
   $JPEGTRAN -verbose $EXTRAJTRANARGS -outfile "$IMGULT_FILE" "$IMGULT_FILE"
   jpegoptim -m$OPTLEVEL "$IMGULT_FILE"
 done
