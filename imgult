@@ -21,6 +21,12 @@ EXIFREMOVE=${EXIFREMOVE:-true}
 ## fancy syntax thanks to B. Watson
 OPTLEVEL=${1:-91}
 
+## file extensions are easily added now,
+## thanks to B. Watson
+JPGEXTENSIONS="jpg jpeg jpe jfif jif jfi thm"
+PNGEXTENSIONS="png apng mng"
+GIFEXTENSIONS="gif"
+
 if [ -z "$JPEGTRAN" ]; then
   export PATH=/usr/local/Cellar/mozjpeg/*/bin:/opt/libmozjpeg/bin:/opt/mozjpeg/bin:$PATH
   JPEGTRAN="$( which jpegtran )"
@@ -31,8 +37,8 @@ if [ -z "$JPEGTRAN" ]; then
 fi
 
 find . -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.jpe' \
-  -o -iname '*.jif' -o -iname '*.jfif' -o -iname '*.jfi' -o -iname '*.thm' \
-  -o -iname '*.gif' -o -iname '*.png' -o -iname '*.apng' -o -iname '*.mng' \) \
+  -o -iname '*.jfif' -o -iname '*.jif' -o -iname '*.jfi' -o -iname '*.thm' \
+  -o -iname '*.png' -o -iname '*.apng' -o -iname '*.mng' -o -iname '*.gif' \) \
   > imgult-files.txt
 
 ## back it up!
@@ -53,22 +59,19 @@ if [ "$EXIFREMOVE" = "true" ]; then
   fi
 fi
 
-grep -i 'jpe\?g$' imgult-files.txt && grep -i 'jpe$' imgult-files.txt && \
-  grep -i 'jif$' imgult-files.txt && grep -i 'jfif$' imgult-files.txt && \
-  grep -i 'jfi$' imgult-files.txt && grep -i 'thm$'imgult-files.txt \
-  | while read IMGULT_FILE; do
+egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" | while read IMGULT_FILE; do
   $JPEGTRAN -verbose $EXTRAJTRANARGS -outfile "$IMGULT_FILE" "$IMGULT_FILE"
   jpegoptim -m$OPTLEVEL "$IMGULT_FILE"
 done
 
-grep -i 'png$' imgult-files.txt | while read IMGULT_FILE; do
+egrep -i "($(echo $PNGEXTENSIONS | tr ' ' '|')\$)" | while read IMGULT_FILE; do
   optipng $EXTRAOPTIPNARGS "$IMGULT_FILE"
   pngquant --quality=77-99 -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE"
 done
 
 ## -b keeps the filename, -O3 uses highest optimization level
 ## it is an 'O' as in Oxford, not a zero (0)
-grep -i 'gif$' imgult-files.txt | while read IMGULT_FILE; do
+egrep -i "($(echo $GIFEXTENSIONS | tr ' ' '|')\$)" | while read IMGULT_FILE; do
   gifsicle -b -O3 "$IMGULT_FILE"
 done
 
