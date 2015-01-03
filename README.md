@@ -58,7 +58,7 @@ Default is to remove exif data, to keep EXIF data, run:
 
 ##### BACKUPs
 
-To back up all original images to ```../imgult-backup-files/```, run:
+To back up all original images to ```imgult-backup-files/```, run:
 
     BACKUPIMAGES=true imgult
 
