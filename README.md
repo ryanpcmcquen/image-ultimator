@@ -2,7 +2,7 @@ image-ultimator
 ===============
 
 ## What is it?
-imgult is a tiny and mighty script that will recursively loop through a directory and its subdirectories optimizing all GIFs, JPGs, JPEGs and PNGs. It also removes EXIF data (run with ```EXIFREMOVE=n``` to keep EXIF data). You can backup the images by running it with (```BACKUPIMAGES=true```).
+imgult is a tiny and mighty script that will recursively loop through a directory and its subdirectories optimizing all GIFs, JPGs and PNGs (the script supports several types of these kinds of extensions, check the source to see). It also removes EXIF data (run with ```EXIFREMOVE=n``` to keep EXIF data). You can backup the images by running it with (```BACKUPIMAGES=true```).
 
 
 #### I just want to run it once (it will kindly remove itself):
@@ -29,7 +29,7 @@ Mac:
 
 # USE AT YOUR OWN RISK!
 
-Just run this command in any directory with images, note that it will *OVERWRITE* images (GIFs, JPEGs, JPGs & PNGs) and loop recursively through all directories INSIDE the directory you run it in. There is a BACKUP option though.  ;^)
+Just run this command in any directory with images, note that it will *OVERWRITE* images (GIFs, JPGs & PNGs) and loop recursively through all directories INSIDE the directory you run it in. There is a BACKUP option though.  ;^)
 
 
 
@@ -42,7 +42,7 @@ Run:
     imgult
 
 
-P.S. You may feed different qualities to imgult by running it like so (0-100, default is 90, only applies to JPGs & JPEGs):
+P.S. You may feed different qualities to imgult by running it like so (0-100, default is 91, only applies to JPGs):
 
     imgult 70
 
