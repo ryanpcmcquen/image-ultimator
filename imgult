@@ -19,10 +19,10 @@ BACKUPIMAGES=${BACKUPIMAGES:-false}
 EXIFREMOVE=${EXIFREMOVE:-true}
 
 ## fancy syntax thanks to B. Watson
-OPTLEVEL=${1:-90}
+OPTLEVEL=${1:-91}
 
 if [ -z "$JPEGTRAN" ]; then
-  export PATH=/usr/local/Cellar/mozjpeg/*/bin:/opt/libmozjpeg/bin:$PATH
+  export PATH=/usr/local/Cellar/mozjpeg/*/bin:/opt/libmozjpeg/bin:/opt/mozjpeg/bin:$PATH
   JPEGTRAN="$( which jpegtran )"
   if [ -z "$JPEGTRAN" ]; then
     echo "Can't find jpegtran in $PATH, install it or set JPEGTRAN in the environment"
@@ -30,8 +30,10 @@ if [ -z "$JPEGTRAN" ]; then
   fi
 fi
 
-find . -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname \
-  '*.gif' -o -iname '*.png' \) > imgult-files.txt
+find . -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.jpe' \
+  -o -iname '*.jif' -o -iname '*.jfif' -o -iname '*.jfi' -o -iname '*.thm' \
+  -o -iname '*.gif' -o -iname '*.png' -o -iname '*.apng' -o -iname '*.mng' \) \
+  > imgult-files.txt
 
 ## back it up!
 if [ "$BACKUPIMAGES" = true ]; then
@@ -58,7 +60,7 @@ done
 
 grep -i 'png$' imgult-files.txt | while read IMGULT_FILE; do
   optipng $EXTRAOPTIPNARGS "$IMGULT_FILE"
-  pngquant --quality=75-99 -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE"
+  pngquant --quality=77-99 -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE"
 done
 
 ## -b keeps the filename, -O3 uses highest optimization level
