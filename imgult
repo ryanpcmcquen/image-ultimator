@@ -19,7 +19,7 @@ BACKUPIMAGES=${BACKUPIMAGES:-false}
 EXIFREMOVE=${EXIFREMOVE:-true}
 
 ## fancy syntax thanks to B. Watson
-OPTLEVEL=${1:-91}
+OPTLEVEL=${1:-85}
 
 ## file extensions are easily added now,
 ## thanks to B. Watson
@@ -53,25 +53,28 @@ if [ "$EXIFREMOVE" = "true" ]; then
   EXTRAOPTPNARGS="-strip all"
   if [ ! -z "$( which exiftool )" ]; then
     cat imgult-files.txt | \
-      while read IMGULT_FILE;
-      do exiftool -overwrite_original -all= "$IMGULT_FILE";
+    while read IMGULT_FILE; do
+      exiftool -overwrite_original -all= "$IMGULT_FILE";
     done
   fi
 fi
 
-egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" | while read IMGULT_FILE; do
+egrep -i "( $( echo $JPGEXTENSIONS | tr ' ' '|' )\$ )" imgult-files.txt | \
+while read IMGULT_FILE; do
   $JPEGTRAN -verbose $EXTRAJTRANARGS -outfile "$IMGULT_FILE" "$IMGULT_FILE"
   jpegoptim -m$OPTLEVEL "$IMGULT_FILE"
 done
 
-egrep -i "($(echo $PNGEXTENSIONS | tr ' ' '|')\$)" | while read IMGULT_FILE; do
+egrep -i "( $( echo $PNGEXTENSIONS | tr ' ' '|' )\$ )" imgult-files.txt | \
+while read IMGULT_FILE; do
   optipng $EXTRAOPTIPNARGS "$IMGULT_FILE"
-  pngquant --quality=77-99 -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE"
+  pngquant --quality=70-90 -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE"
 done
 
 ## -b keeps the filename, -O3 uses highest optimization level
 ## it is an 'O' as in Oxford, not a zero (0)
-egrep -i "($(echo $GIFEXTENSIONS | tr ' ' '|')\$)" | while read IMGULT_FILE; do
+egrep -i "( $( echo $GIFEXTENSIONS | tr ' ' '|' )\$ )" imgult-files.txt | \
+while read IMGULT_FILE; do
   gifsicle -b -O3 "$IMGULT_FILE"
 done
 
