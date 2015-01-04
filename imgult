@@ -29,7 +29,7 @@ GIFEXTENSIONS="gif"
 
 if [ -z "$JPEGTRAN" ]; then
   export PATH=/usr/local/Cellar/mozjpeg/*/bin:/opt/libmozjpeg/bin:/opt/mozjpeg/bin:$PATH
-  JPEGTRAN="$( which jpegtran )"
+  JPEGTRAN="$(which jpegtran)"
   if [ -z "$JPEGTRAN" ]; then
     echo "Can't find jpegtran in $PATH, install it or set JPEGTRAN in the environment"
     exit 1
@@ -51,7 +51,7 @@ fi
 if [ "$EXIFREMOVE" = "true" ]; then
   EXTRAJTRANARGS="-copy none"
   EXTRAOPTPNARGS="-strip all"
-  if [ ! -z "$( which exiftool )" ]; then
+  if [ ! -z "$(which exiftool)" ]; then
     cat imgult-files.txt | \
     while read IMGULT_FILE; do
       exiftool -overwrite_original -all= "$IMGULT_FILE";
@@ -59,13 +59,13 @@ if [ "$EXIFREMOVE" = "true" ]; then
   fi
 fi
 
-egrep -i "( $( echo $JPGEXTENSIONS | tr ' ' '|' )\$ )" imgult-files.txt | \
+egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
   $JPEGTRAN -verbose $EXTRAJTRANARGS -outfile "$IMGULT_FILE" "$IMGULT_FILE"
   jpegoptim -m$OPTLEVEL "$IMGULT_FILE"
 done
 
-egrep -i "( $( echo $PNGEXTENSIONS | tr ' ' '|' )\$ )" imgult-files.txt | \
+egrep -i "($(echo $PNGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
   optipng $EXTRAOPTIPNARGS "$IMGULT_FILE"
   pngquant --quality=70-90 -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE"
@@ -73,7 +73,7 @@ done
 
 ## -b keeps the filename, -O3 uses highest optimization level
 ## it is an 'O' as in Oxford, not a zero (0)
-egrep -i "( $( echo $GIFEXTENSIONS | tr ' ' '|' )\$ )" imgult-files.txt | \
+egrep -i "($(echo $GIFEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
   gifsicle -b -O3 "$IMGULT_FILE"
 done
