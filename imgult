@@ -68,7 +68,7 @@ done
 egrep -i "($(echo $PNGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
   optipng $EXTRAOPTIPNARGS "$IMGULT_FILE"
-  pngquant --quality=65-85 -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE"
+  pngquant --quality=60-85 -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE"
 done
 
 ## -b keeps the filename, -O3 uses highest optimization level
