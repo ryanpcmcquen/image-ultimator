@@ -62,20 +62,20 @@ fi
 egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
   $JPEGTRAN -verbose $EXTRAJTRANARGS -outfile "$IMGULT_FILE" "$IMGULT_FILE"
-  jpegoptim -m$OPTLEVEL "$IMGULT_FILE"
+  jpegoptim -v -m$OPTLEVEL "$IMGULT_FILE"
 done
 
 egrep -i "($(echo $PNGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
-  pngquant --quality=65-85 -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE"
-  optipng $EXTRAOPTIPNARGS "$IMGULT_FILE"
+  pngquant -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE"
+  optipng -v $EXTRAOPTIPNARGS "$IMGULT_FILE"
 done
 
 ## -b keeps the filename, -O3 uses highest optimization level
 ## it is an 'O' as in Oxford, not a zero (0)
 egrep -i "($(echo $GIFEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
-  gifsicle -b -O3 "$IMGULT_FILE"
+  gifsicle -V -b -O3 "$IMGULT_FILE"
 done
 
 rm imgult-files.txt
