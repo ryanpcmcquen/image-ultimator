@@ -1,16 +1,5 @@
 #!/bin/sh
-
-## jpegoptim, optipng, gifsicle and some jpegtran (preferably mozjpeg)
-## must all be installed
-##
-## if you don't have them
-## 1. shame on you!!
-## linux
-## 2. sbopkg -i jpegoptim -i mozjpeg -i optipng -i pngquant -i gifsicle -i exiftool
-## mac
-## 2. brew install jpegoptim mozjpeg optipng pngquant gifsicle exiftool
-## (slackware already has jpegtran, 
-## although it will check for the mozjpeg version)
+## imgult, the image-ultimator
 
 ## prepend imgult on the command line with
 ## BACKUPIMAGES=true  (to back everything up)
@@ -54,17 +43,19 @@ if [ "$EXIFREMOVE" = "true" ]; then
   if [ ! -z "$(which exiftool)" ]; then
     cat imgult-files.txt | \
     while read IMGULT_FILE; do
-      exiftool -overwrite_original -all= "$IMGULT_FILE";
+      exiftool -v -overwrite_original -all= "$IMGULT_FILE"
     done
   fi
 fi
 
+## standard options with verbosity
 egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
   $JPEGTRAN -verbose $EXTRAJTRANARGS -outfile "$IMGULT_FILE" "$IMGULT_FILE"
   jpegoptim -v -m$OPTLEVEL "$IMGULT_FILE"
 done
 
+## standard options with verbosity
 egrep -i "($(echo $PNGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
   pngquant -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE"
@@ -78,6 +69,7 @@ while read IMGULT_FILE; do
   gifsicle -V -b -O3 "$IMGULT_FILE"
 done
 
-rm imgult-files.txt
+## clean up!
+rm -v imgult-files.txt
 
 
