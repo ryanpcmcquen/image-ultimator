@@ -7,7 +7,7 @@ imgult is a tiny and mighty script that will recursively loop through a director
 
 #### I just want to run it once (it will kindly remove itself):
 
-    wget -N https://raw.githubusercontent.com/ryanpcmcquen/image-ultimator/master/imgult; sh imgult; rm imgult
+    curl https://raw.githubusercontent.com/ryanpcmcquen/image-ultimator/master/imgult | sh
 
 
 ### I love this script! I want to *install* it and use it everywhere!
@@ -49,7 +49,7 @@ P.S. You may feed different qualities to imgult by running it like so (0-100, de
 
 ##### EXIF removal
 
-There is exif removal support (exiftool is supported but not required, the script will check if you have it). The script will attempt to use the built in exif removal from optipng and jpegtran, but exiftool is recommended if you really want to take advantage of this feature.
+The script will use the built in exif removal from optipng and jpegtran, but exiftool (the script will check if you have it) is recommended if you really want to take advantage of this feature.
 
 Default is to remove exif data, to keep EXIF data, run:
 
