@@ -1,6 +1,25 @@
 #!/bin/sh
 ## imgult, the image-ultimator
 
+# Ryan P.C. McQuen | Everett, WA | ryan.q@linux.com
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version, with the following exception:
+# the text of the GPL license may be omitted.
+
+# This program is distributed in the hope that it will be useful, but
+# without any warranty; without even the implied warranty of
+# merchantability or fitness for a particular purpose. Compiling,
+# interpreting, executing or merely reading the text of the program
+# may result in lapses of consciousness and/or very being, up to and
+# including the end of all existence and the Universe as we know it.
+# See the GNU General Public License for more details.
+
+# You may have received a copy of the GNU General Public License
+# along with this program (most likely, a file named COPYING). If
+# not, see <http://www.gnu.org/licenses/>.
+
 ## prepend imgult on the command line with
 ## BACKUPIMAGES=true  (to back everything up)
 ## EXIFREMOVE=n  (to keep EXIF data)
@@ -15,6 +34,7 @@ OPTLEVEL=${1:-85}
 JPGEXTENSIONS="jpg jpeg jpe jfif jif jfi thm"
 PNGEXTENSIONS="png apng mng"
 GIFEXTENSIONS="gif"
+SVGEXTENSIONS="svg svgz"
 
 if [ -z "$JPEGTRAN" ]; then
   export PATH=/usr/local/Cellar/mozjpeg/*/bin:/opt/libmozjpeg/bin:/opt/mozjpeg/bin:$PATH
@@ -27,7 +47,8 @@ fi
 
 find . -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.jpe' \
   -o -iname '*.jfif' -o -iname '*.jif' -o -iname '*.jfi' -o -iname '*.thm' \
-  -o -iname '*.png' -o -iname '*.apng' -o -iname '*.mng' -o -iname '*.gif' \) \
+  -o -iname '*.png' -o -iname '*.apng' -o -iname '*.mng' -o -iname '*.gif' \
+  -o -iname '*.svg' -o -iname '*.svgz' \) \
   > imgult-files.txt
 
 ## back it up!
@@ -68,6 +89,14 @@ egrep -i "($(echo $GIFEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
   gifsicle -V -b -O3 "$IMGULT_FILE"
 done
+
+if [ ! -z "$(which scour)" ]; then
+  egrep -i "($(echo $SVGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
+  while read IMGULT_FILE; do
+    scour -i "$IMGULT_FILE" -o "$IMGULT_FILE" --enable-viewboxing --enable-id-stripping \
+      --enable-comment-stripping --shorten-ids --indent=none
+  done
+fi
 
 ## clean up!
 rm -v imgult-files.txt
