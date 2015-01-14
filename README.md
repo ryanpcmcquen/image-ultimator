@@ -2,7 +2,7 @@ image-ultimator
 ===============
 
 ## What is it?
-imgult is a tiny and mighty script that will recursively loop through a directory and its subdirectories optimizing all GIFs, JPGs and PNGs (the script supports several types of these kinds of extensions, check the source to see). It also removes EXIF data (run with ```EXIFREMOVE=n``` to keep EXIF data). You can backup the images by running it with (```BACKUPIMAGES=true```).
+imgult is a tiny and mighty script that will recursively loop through a directory and its subdirectories optimizing all GIFs, JPGs, PNGs and SVGs (the script supports several types of these kinds of extensions, check the source to see). It also removes EXIF data (run with ```EXIFREMOVE=n``` to keep EXIF data). You can backup the images by running it with (```BACKUPIMAGES=true```).
 
 
 #### I just want to run it once (it will kindly remove itself):
@@ -26,10 +26,14 @@ Mac:
 
     brew install jpegoptim mozjpeg optipng pngquant gifsicle exiftool
 
+For SVG support (Linux & Mac):
+
+    pip install --upgrade scour
+
 
 # USE AT YOUR OWN RISK!
 
-Just run this command in any directory with images, note that it will *OVERWRITE* images (GIFs, JPGs & PNGs) and loop recursively through all directories INSIDE the directory you run it in. There is a BACKUP option though.  ;^)
+Just run this command in any directory with images, note that it will *OVERWRITE* images (GIFs, JPGs, PNGs & SVGs) and loop recursively through all directories INSIDE the directory you run it in. There is a BACKUP option though.  ;^)
 
 
 
