@@ -102,7 +102,7 @@ egrep -i "($(echo $SVGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
   scour -i "$IMGULT_FILE" --enable-viewboxing --enable-id-stripping \
     --enable-comment-stripping --shorten-ids --indent=none \
-    > "$IMGULT_FILE"
+    > "$IMGULT_FILE" &
 done
 
 ## let child processes complete
