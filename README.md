@@ -20,11 +20,11 @@ Before you run it you need these amazing programs!
 
 Linux:
 
-    sbopkg -i jpegoptim -i mozjpeg -i optipng -i pngquant -i gifsicle -i exiftool
+    sbopkg -i jpegoptim -i mozjpeg -i optipng -i pngquant -i gifsicle
 
 Mac:
 
-    brew install jpegoptim mozjpeg optipng pngquant gifsicle exiftool
+    brew install jpegoptim mozjpeg optipng pngquant gifsicle exiv2
 
 Linux & Mac:
 
