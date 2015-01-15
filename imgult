@@ -42,14 +42,14 @@ if [ -z "$JPEGTRAN" ]; then
 fi
 
 ## check to make sure we can be awesome  ;^)
-if [ -z "$(which exiftool)" ] || \
+if [ -z "$(which exiv2)" ] || \
   [ -z "$JPEGTRAN" ] || [ -z "$(which jpegoptim)" ] || \
   [ -z "$(which pngquant)" ] || [ -z "$(which optipng)" ] || \
   [ -z "$(which gifsicle)" ] || [ -z "$(which scour)" ]; then
     echo 
     echo "You don't have all the imgult dependencies."
     echo
-    echo "You need: exiftool, jpegtran (mozjpeg), jpegoptim, pngquant, "
+    echo "You need: exiv2, jpegtran (mozjpeg), jpegoptim, pngquant, "
     echo "optipng, gifsicle and scour."
     echo
     exit 1
@@ -69,29 +69,11 @@ fi
 
 ## clear out that exif!
 if [ "$EXIFREMOVE" = "true" ]; then
-  exif_tool_exec() {
-    exiftool -v -overwrite_original -all= "$IMGULT_FILE"
-  }
-else
-  exif_tool_exec() {
-    echo "exif data kept"
-  }
+  cat imgult-files.txt | \
+  while read IMGULT_FILE; do
+    exiv2 -v rm "$IMGULT_FILE" &
+  done
 fi
-
-egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
-while read IMGULT_FILE; do
-  exif_tool_exec &
-done
-
-egrep -i "($(echo $PNGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
-while read IMGULT_FILE; do
-  exif_tool_exec &
-done
-
-egrep -i "($(echo $GIFEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
-while read IMGULT_FILE; do
-  exif_tool_exec &
-done
 
 
 ## standard options with verbosity
@@ -128,4 +110,6 @@ wait
 ## clean up!
 rm -v imgult-files.txt
 
-
+echo
+echo "The imgult has completed. Have a nice day."
+echo
