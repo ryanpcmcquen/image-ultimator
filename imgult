@@ -90,6 +90,7 @@ while read IMGULT_FILE; do
   gifsicle -V -b -O3 "$IMGULT_FILE"
 done
 
+## these are the recommended 'maximum' arguments by the author of scour
 if [ ! -z "$(which scour)" ]; then
   egrep -i "($(echo $SVGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
   while read IMGULT_FILE; do
