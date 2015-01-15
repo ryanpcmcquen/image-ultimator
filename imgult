@@ -78,17 +78,33 @@ else
   }
 fi
 
+egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
+while read IMGULT_FILE; do
+  exif_tool_exec &
+done
+
+egrep -i "($(echo $PNGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
+while read IMGULT_FILE; do
+  exif_tool_exec &
+done
+
+egrep -i "($(echo $GIFEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
+while read IMGULT_FILE; do
+  exif_tool_exec &
+done
+
+
 ## standard options with verbosity
 egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
-  exif_tool_exec && $JPEGTRAN -verbose -outfile "$IMGULT_FILE" "$IMGULT_FILE" \
+  $JPEGTRAN -verbose -outfile "$IMGULT_FILE" "$IMGULT_FILE" \
   && jpegoptim -v -m$OPTLEVEL "$IMGULT_FILE" &
 done
 
 ## standard options with verbosity
 egrep -i "($(echo $PNGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
-  exif_tool_exec && pngquant -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE" \
+  pngquant -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE" \
   && optipng -v "$IMGULT_FILE" &
 done
 
@@ -96,7 +112,7 @@ done
 ## it is an 'O' as in Oxford, not a zero (0)
 egrep -i "($(echo $GIFEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
-  exif_tool_exec && gifsicle -V -b -O3 "$IMGULT_FILE" &
+  gifsicle -V -b -O3 "$IMGULT_FILE" &
 done
 
 ## these are the recommended 'maximum' arguments by the author of scour
