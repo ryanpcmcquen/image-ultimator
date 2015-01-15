@@ -93,8 +93,9 @@ done
 if [ ! -z "$(which scour)" ]; then
   egrep -i "($(echo $SVGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
   while read IMGULT_FILE; do
-    scour -i "$IMGULT_FILE" -o "$IMGULT_FILE" --enable-viewboxing --enable-id-stripping \
+    scour -i "$IMGULT_FILE" -o scourImgultTmp --enable-viewboxing --enable-id-stripping \
       --enable-comment-stripping --shorten-ids --indent=none
+    mv "$IMGULT_FILE" scourImgultTmp
   done
 fi
 
