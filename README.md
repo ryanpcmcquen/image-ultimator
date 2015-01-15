@@ -26,7 +26,7 @@ Mac:
 
     brew install jpegoptim mozjpeg optipng pngquant gifsicle exiftool
 
-For SVG support (Linux & Mac):
+Linux & Mac:
 
     pip install --upgrade scour
 
@@ -52,8 +52,6 @@ P.S. You may feed different qualities to imgult by running it like so (0-100, de
 
 
 ##### EXIF removal
-
-The script will use the built in exif removal from optipng and jpegtran, but exiftool (the script will check if you have it) is recommended if you really want to take advantage of this feature.
 
 Default is to remove exif data, to keep EXIF data, run:
 

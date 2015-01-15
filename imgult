@@ -39,12 +39,23 @@ SVGEXTENSIONS="svg svgz"
 if [ -z "$JPEGTRAN" ]; then
   export PATH=/usr/local/Cellar/mozjpeg/*/bin:/opt/libmozjpeg/bin:/opt/mozjpeg/bin:$PATH
   JPEGTRAN="$(which jpegtran)"
-  if [ -z "$JPEGTRAN" ]; then
-    echo "Can't find jpegtran in $PATH, install it or set JPEGTRAN in the environment"
-    exit 1
-  fi
 fi
 
+## check to make sure we can be awesome  ;^)
+if [ -z "$(which exiftool)" ] || \
+  [ -z "$JPEGTRAN" ] || [ -z "$(which jpegoptim)" ] \
+  [ -z "$(which pngquant)" ] || [ -z "$(which optipng)" ] || \
+  [ -z "$(which gifsicle)" ] || [ -z "$(which scour)" ]; then
+    echo 
+    echo "You don't have all the imgult dependencies."
+    echo
+    echo "You need: exiftool, jpegtran (mozjpeg), jpegoptim, pngquant, "
+    echo "optipng, gifsicle and scour."
+    echo
+    exit 1
+fi
+
+## this is what we call leaning toothpick syndrome
 find . -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.jpe' \
   -o -iname '*.jfif' -o -iname '*.jif' -o -iname '*.jfi' -o -iname '*.thm' \
   -o -iname '*.png' -o -iname '*.apng' -o -iname '*.mng' -o -iname '*.gif' \
@@ -57,49 +68,44 @@ if [ "$BACKUPIMAGES" = true ]; then
 fi
 
 ## clear out that exif!
-## detects and uses exiftool if available
 if [ "$EXIFREMOVE" = "true" ]; then
-  EXTRAJTRANARGS="-copy none"
-  EXTRAOPTPNARGS="-strip all"
-  if [ ! -z "$(which exiftool)" ]; then
-    cat imgult-files.txt | \
-    while read IMGULT_FILE; do
-      exiftool -v -overwrite_original -all= "$IMGULT_FILE"
-    done
-  fi
+  cat imgult-files.txt | \
+  while read IMGULT_FILE; do
+    exiftool -v -overwrite_original -all= "$IMGULT_FILE" &
+  done
 fi
 
 ## standard options with verbosity
 egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
-  $JPEGTRAN -verbose $EXTRAJTRANARGS -outfile "$IMGULT_FILE" "$IMGULT_FILE"
-  jpegoptim -v -m$OPTLEVEL "$IMGULT_FILE"
+  $JPEGTRAN -verbose -outfile "$IMGULT_FILE" "$IMGULT_FILE" \
+  && jpegoptim -v -m$OPTLEVEL "$IMGULT_FILE" &
 done
 
 ## standard options with verbosity
 egrep -i "($(echo $PNGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
-  pngquant -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE"
-  optipng -v $EXTRAOPTIPNARGS "$IMGULT_FILE"
+  pngquant -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE" \
+  && optipng -v "$IMGULT_FILE" &
 done
 
 ## -b keeps the filename, -O3 uses highest optimization level
 ## it is an 'O' as in Oxford, not a zero (0)
 egrep -i "($(echo $GIFEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
-  gifsicle -V -b -O3 "$IMGULT_FILE"
+  gifsicle -V -b -O3 "$IMGULT_FILE" &
 done
 
 ## these are the recommended 'maximum' arguments by the author of scour
-if [ ! -z "$(which scour)" ]; then
-  egrep -i "($(echo $SVGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
-  while read IMGULT_FILE; do
-    scour -i "$IMGULT_FILE" -o scourImgultTmp --enable-viewboxing --enable-id-stripping \
-      --enable-comment-stripping --shorten-ids --indent=none
-    mv -v scourImgultTmp "$IMGULT_FILE"
-  done
-fi
+egrep -i "($(echo $SVGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
+while read IMGULT_FILE; do
+  scour -i "$IMGULT_FILE" -o scourImgultTmp --enable-viewboxing --enable-id-stripping \
+    --enable-comment-stripping --shorten-ids --indent=none \
+    && mv -v scourImgultTmp "$IMGULT_FILE" &
+done
 
+## let child processes complete
+wait
 ## clean up!
 rm -v imgult-files.txt
 
