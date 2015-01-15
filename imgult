@@ -100,9 +100,9 @@ done
 ## these are the recommended 'maximum' arguments by the author of scour
 egrep -i "($(echo $SVGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
-  scour -i "$IMGULT_FILE" -o scourImgultTmp --enable-viewboxing --enable-id-stripping \
+  scour -i "$IMGULT_FILE" --enable-viewboxing --enable-id-stripping \
     --enable-comment-stripping --shorten-ids --indent=none \
-    && mv -v scourImgultTmp "$IMGULT_FILE"
+    > "$IMGULT_FILE"
 done
 
 ## let child processes complete
