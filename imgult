@@ -95,7 +95,7 @@ if [ ! -z "$(which scour)" ]; then
   while read IMGULT_FILE; do
     scour -i "$IMGULT_FILE" -o scourImgultTmp --enable-viewboxing --enable-id-stripping \
       --enable-comment-stripping --shorten-ids --indent=none
-    mv "$IMGULT_FILE" scourImgultTmp
+    mv -v scourImgultTmp "$IMGULT_FILE"
   done
 fi
 
