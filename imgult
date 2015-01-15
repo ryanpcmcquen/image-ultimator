@@ -69,23 +69,26 @@ fi
 
 ## clear out that exif!
 if [ "$EXIFREMOVE" = "true" ]; then
-  cat imgult-files.txt | \
-  while read IMGULT_FILE; do
-    exiftool -v -overwrite_original -all= "$IMGULT_FILE" &
-  done
+  exif_tool_exec() {
+    exiftool -v -overwrite_original -all= "$IMGULT_FILE"
+  }
+else
+  exif_tool_exec() {
+    echo "exif data kept"
+  }
 fi
 
 ## standard options with verbosity
 egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
-  $JPEGTRAN -verbose -outfile "$IMGULT_FILE" "$IMGULT_FILE" \
+  exif_tool_exec && $JPEGTRAN -verbose -outfile "$IMGULT_FILE" "$IMGULT_FILE" \
   && jpegoptim -v -m$OPTLEVEL "$IMGULT_FILE" &
 done
 
 ## standard options with verbosity
 egrep -i "($(echo $PNGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
-  pngquant -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE" \
+  exif_tool_exec && pngquant -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE" \
   && optipng -v "$IMGULT_FILE" &
 done
 
@@ -93,7 +96,7 @@ done
 ## it is an 'O' as in Oxford, not a zero (0)
 egrep -i "($(echo $GIFEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
-  gifsicle -V -b -O3 "$IMGULT_FILE" &
+  exif_tool_exec && gifsicle -V -b -O3 "$IMGULT_FILE" &
 done
 
 ## these are the recommended 'maximum' arguments by the author of scour
