@@ -43,7 +43,7 @@ fi
 
 ## check to make sure we can be awesome  ;^)
 if [ -z "$(which exiftool)" ] || \
-  [ -z "$JPEGTRAN" ] || [ -z "$(which jpegoptim)" ] \
+  [ -z "$JPEGTRAN" ] || [ -z "$(which jpegoptim)" ] || \
   [ -z "$(which pngquant)" ] || [ -z "$(which optipng)" ] || \
   [ -z "$(which gifsicle)" ] || [ -z "$(which scour)" ]; then
     echo 
