@@ -46,7 +46,7 @@ if [ -z "$(which exiv2)" ] || \
   [ -z "$JPEGTRAN" ] || [ -z "$(which jpegoptim)" ] || \
   [ -z "$(which pngquant)" ] || [ -z "$(which optipng)" ] || \
   [ -z "$(which gifsicle)" ] || [ -z "$(which scour)" ]; then
-    echo 
+    echo
     echo "You don't have all the imgult dependencies."
     echo
     echo "You need: exiv2, jpegtran (mozjpeg), jpegoptim, pngquant, "
@@ -74,7 +74,6 @@ if [ "$EXIFREMOVE" = "true" ]; then
     exiv2 -v rm "$IMGULT_FILE" &
   done
 fi
-
 
 ## standard options with verbosity
 egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
@@ -108,7 +107,7 @@ done
 ## let child processes complete
 while [ `lsof imgult-files.txt` ]; do
   wait
-done  
+done
 
 ## clean up and say goodbye!
 rm -v imgult-files.txt
