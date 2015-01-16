@@ -106,10 +106,12 @@ while read IMGULT_FILE; do
 done
 
 ## let child processes complete
-wait
-## clean up!
-rm -v imgult-files.txt
+if [ -z `lsof imgult-files.txt` ]; then
+  rm -v imgult-files.txt
+  echo
+  echo "The imgult has completed. Have a nice day."
+  echo
+else
+  wait
+fi
 
-echo
-echo "The imgult has completed. Have a nice day."
-echo
