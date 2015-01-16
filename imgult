@@ -107,7 +107,7 @@ done
 
 ## let child processes complete
 while [ `lsof imgult-files.txt` ]; do
-  sleep 1
+  wait
 done  
 
 ## clean up and say goodbye!
