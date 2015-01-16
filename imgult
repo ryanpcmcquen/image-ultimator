@@ -27,7 +27,7 @@ BACKUPIMAGES=${BACKUPIMAGES:-false}
 EXIFREMOVE=${EXIFREMOVE:-true}
 
 ## fancy syntax thanks to B. Watson
-OPTLEVEL=${1:-85}
+OPTLEVEL=${1:-84}
 
 ## file extensions are easily added now,
 ## thanks to B. Watson
