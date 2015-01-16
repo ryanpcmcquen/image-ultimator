@@ -46,7 +46,7 @@ Run:
     imgult
 
 
-P.S. You may feed different qualities to imgult by running it like so (0-100, default is 85, only applies to JPGs):
+P.S. You may feed different qualities to imgult by running it like so (0-100, default is 84, only applies to JPGs):
 
     imgult 70
 
