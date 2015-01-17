@@ -28,7 +28,7 @@ Mac:
 
 Linux & Mac:
 
-    pip install --upgrade scour
+    npm install -g svgo
 
 
 # USE AT YOUR OWN RISK!
