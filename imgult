@@ -45,12 +45,12 @@ fi
 if [ -z "$(which exiv2)" ] || \
   [ -z "$JPEGTRAN" ] || [ -z "$(which jpegoptim)" ] || \
   [ -z "$(which pngquant)" ] || [ -z "$(which optipng)" ] || \
-  [ -z "$(which gifsicle)" ] || [ -z "$(which scour)" ]; then
+  [ -z "$(which gifsicle)" ] || [ -z "$(which svgo)" ]; then
     echo
     echo "You don't have all the imgult dependencies."
     echo
     echo "You need: exiv2, jpegtran (mozjpeg), jpegoptim, pngquant, "
-    echo "optipng, gifsicle and scour."
+    echo "optipng, gifsicle and svgo."
     echo
     exit 1
 fi
@@ -96,17 +96,15 @@ while read IMGULT_FILE; do
   gifsicle -V -b -O3 "$IMGULT_FILE" &
 done
 
-## these are the recommended 'maximum' arguments by the author of scour
 egrep -i "($(echo $SVGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
-  scour -i "$IMGULT_FILE" -o scourImgultTmp --enable-viewboxing --enable-id-stripping \
-    --enable-comment-stripping --shorten-ids --indent=none \
-    && mv -v scourImgultTmp "$IMGULT_FILE"
+  svgo "$IMGULT_FILE"
 done
 
 ## let child processes complete
 while [ `lsof imgult-files.txt` ]; do
   wait
+  sleep 1
 done
 
 ## clean up and say goodbye!
