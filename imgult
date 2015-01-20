@@ -36,6 +36,13 @@ PNGEXTENSIONS="png apng mng"
 GIFEXTENSIONS="gif"
 SVGEXTENSIONS="svg svgz"
 
+RUN_OVERLOAD_PROTECTION_ENCABULATOR() {
+  while [ "`jobs | wc -l`" -gt 9 ]; do
+    wait
+    echo "*-_-OVERLOAD PROTECTION INITIATED-_-*"
+  done
+}
+
 if [ -z "$JPEGTRAN" ]; then
   export PATH=/usr/local/Cellar/mozjpeg/*/bin:/opt/libmozjpeg/bin:/opt/mozjpeg/bin:$PATH
   JPEGTRAN="$(which jpegtran)"
@@ -75,12 +82,16 @@ if [ "$EXIFREMOVE" = "true" ]; then
   done
 fi
 
+RUN_OVERLOAD_PROTECTION_ENCABULATOR
+
 ## standard options with verbosity
 egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
   $JPEGTRAN -verbose -outfile "$IMGULT_FILE" "$IMGULT_FILE" \
   && jpegoptim -v -m$OPTLEVEL "$IMGULT_FILE" &
 done
+
+RUN_OVERLOAD_PROTECTION_ENCABULATOR
 
 ## standard options with verbosity
 egrep -i "($(echo $PNGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
@@ -89,6 +100,8 @@ while read IMGULT_FILE; do
   && optipng -v "$IMGULT_FILE" &
 done
 
+RUN_OVERLOAD_PROTECTION_ENCABULATOR
+
 ## -b keeps the filename, -O3 uses highest optimization level
 ## it is an 'O' as in Oxford, not a zero (0)
 egrep -i "($(echo $GIFEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
@@ -96,10 +109,14 @@ while read IMGULT_FILE; do
   gifsicle -V -b -O3 "$IMGULT_FILE" &
 done
 
+RUN_OVERLOAD_PROTECTION_ENCABULATOR
+
 egrep -i "($(echo $SVGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
   svgo "$IMGULT_FILE"
 done
+
+RUN_OVERLOAD_PROTECTION_ENCABULATOR
 
 ## let everything complete
 while [ -e imgult-files.txt ]; do
