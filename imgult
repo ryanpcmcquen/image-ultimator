@@ -107,7 +107,7 @@ while [ -e imgult-files.txt ]; do
     || [ "`pgrep jpegtran`" ] || [ "`pgrep jpegoptim`" ] \
     || [ "`pgrep pngquant`" ] || [ "`pgrep optipng`" ] \
     || [ "`pgrep gifsicle`" ] || [ "`pgrep svgo`" ]; then
-      wait
+      sleep 1
       echo "... imgulting ..."
   else
       rm -v imgult-files.txt
