@@ -101,19 +101,17 @@ while read IMGULT_FILE; do
   svgo "$IMGULT_FILE"
 done
 
-## let child processes complete
-while [ "`lsof imgult-files.txt`" ] || [ "`ps -C exiv2`" ] \
-  || [ "`ps -C jpegtran`" ] || [ "`ps -C jpegoptim`" ] \
-  || [ "`ps -C pngquant`" ] || [ "`ps -C optipng`" ] \
-  || [ "`ps -C gifsicle`" ] || [ "`ps -C svgo`" ]; do
-    wait
-    sleep 1
+## let everything complete
+while [ -e imgult-files.txt ]; do
+  if [ "`pgrep exiv2`" ] \
+    || [ "`pgrep jpegtran`" ] || [ "`pgrep jpegoptim`" ] \
+    || [ "`pgrep pngquant`" ] || [ "`pgrep optipng`" ] \
+    || [ "`pgrep gifsicle`" ] || [ "`pgrep svgo`" ]; then
+      wait
+      echo "... imgulting ..."
+  else
+      rm -v imgult-files.txt
+      echo "The imgult has completed. Have a nice day."
+  fi
 done
-
-## clean up and say goodbye!
-rm -v imgult-files.txt
-echo
-echo "The imgult has completed. Have a nice day."
-echo
-
 
