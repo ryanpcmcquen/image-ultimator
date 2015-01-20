@@ -102,9 +102,12 @@ while read IMGULT_FILE; do
 done
 
 ## let child processes complete
-while [ `lsof imgult-files.txt` ]; do
-  wait
-  sleep 1
+while [ "`lsof imgult-files.txt`" ] || [ "`ps -C exiv2`" ] \
+  || [ "`ps -C jpegtran`" ] || [ "`ps -C jpegoptim`" ] \
+  || [ "`ps -C pngquant`" ] || [ "`ps -C optipng`" ] \
+  || [ "`ps -C gifsicle`" ] || [ "`ps -C svgo`" ]; do
+    wait
+    sleep 1
 done
 
 ## clean up and say goodbye!
