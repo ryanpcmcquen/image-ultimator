@@ -103,7 +103,7 @@ done
 
 ## let everything complete
 while [ -e imgult-files.txt ]; do
-  if [ "`pgrep exiv2`" ] \
+  if [ "`pgrep egrep`" ] || [ "`pgrep exiv2`" ] \
     || [ "`pgrep jpegtran`" ] || [ "`pgrep jpegoptim`" ] \
     || [ "`pgrep pngquant`" ] || [ "`pgrep optipng`" ] \
     || [ "`pgrep gifsicle`" ] || [ "`pgrep svgo`" ]; then
