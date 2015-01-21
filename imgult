@@ -39,7 +39,7 @@ SVGEXTENSIONS="svg svgz"
 RUN_OVERLOAD_PROTECTION_ENCABULATOR() {
   while [ "`jobs | wc -l`" -gt 9 ]; do
     wait
-    echo "*-_-OVERLOAD PROTECTION INITIATED-_-*"
+    echo "*-_- OVERLOAD PROTECTION INITIATED -_-*"
   done
 }
 
