@@ -124,8 +124,8 @@ while [ -e imgult-files.txt ]; do
     || [ "`pgrep jpegtran`" ] || [ "`pgrep jpegoptim`" ] \
     || [ "`pgrep pngquant`" ] || [ "`pgrep optipng`" ] \
     || [ "`pgrep gifsicle`" ] || [ "`pgrep svgo`" ]; then
-      sleep 1
-      echo "... imgulting ..."
+      wait
+      echo "... TUNING FLUX CAPACITOR ..."
   else
       rm -v imgult-files.txt
       echo "The imgult has completed. Have a nice day."
