@@ -39,7 +39,7 @@ SVGEXTENSIONS="svg svgz"
 RUN_OVERLOAD_PROTECTION_ENCABULATOR() {
   while [ "`jobs | wc -l`" -gt 9 ]; do
     wait
-    echo "*-_- OVERLOAD PROTECTION INITIATED -_-*"
+    echo "*-_- OVERLOAD ENCABULATOR PROTECTION INITIATED -_-*"
   done
 }
 
@@ -123,7 +123,8 @@ while [ -e imgult-files.txt ]; do
   if [ "`pgrep egrep`" ] || [ "`pgrep exiv2`" ] \
     || [ "`pgrep jpegtran`" ] || [ "`pgrep jpegoptim`" ] \
     || [ "`pgrep pngquant`" ] || [ "`pgrep optipng`" ] \
-    || [ "`pgrep gifsicle`" ] || [ "`pgrep svgo`" ]; then
+    || [ "`pgrep gifsicle`" ] || [ "`pgrep svgo`" ] \
+    || [ "`lsof -- imgult-files.txt`" ]; then
       wait
       echo "... TUNING FLUX CAPACITOR ..."
   else
