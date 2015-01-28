@@ -62,6 +62,10 @@ if [ -z "$(which exiv2)" ] || \
     exit 1
 fi
 
+## find out how big the directory is
+## so we can relish in the savings later
+du -hs ./ > preImgultSize
+
 ## this is what we call leaning toothpick syndrome
 find . -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.jpe' \
   -o -iname '*.jfif' -o -iname '*.jif' -o -iname '*.jfi' -o -iname '*.thm' \
@@ -128,8 +132,17 @@ while [ -e imgult-files.txt ]; do
       wait
       echo "... TUNING FLUX CAPACITOR ..."
   else
-      rm -v imgult-files.txt
-      echo "The imgult has completed. Have a nice day."
+    rm imgult-files.txt
+    echo
+    echo "Original directory size:"
+    cat preImgultSize
+    echo "Imgulted directory size:"
+    rm preImgultSize
+    ## find out how directory size after imgulting
+    du -hs ./
+    echo
+    echo "The imgult has completed. Take care."
   fi
 done
+
 
