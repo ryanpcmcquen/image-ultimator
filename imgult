@@ -146,17 +146,21 @@ while [ -e imgult-files.txt ]; do
     echo "   \:\__\          /:/  /     \:\/:/  /     \:\/:/  /     \:\  \    \/__/       "
     echo "    \/__/         /:/  /       \::/  /       \::/  /       \:\__\               "
     echo "                  \/__/         \/__/         \/__/         \/__/               "
+    echo
     echo " ****************************************************************************** "
-    echo " ** ... PRE-IMGULT TIME WARP ... ** "
-    echo " ** Execute pre-imgulted directory capacity outputting: ** "
+    echo
+    echo " * ... PRE-IMGULT TIME WARP ... * "
+    echo " * Execute pre-imgulted directory capacity outputting: * "
     cat preImgultSize
-    echo " ** Execute parametric cleaning sequence: ** "
+    echo
+    echo " * Execute parametric cleaning sequence: * "
     rm -v preImgultSize imgult-files.txt
-    echo " ** Execute imgulted capacity outputting: ** "
+    echo
+    echo " * Execute imgulted capacity outputting: * "
     ## find out directory size after imgulting
     du -hs ./
     echo
-    echo " ** The imgult has completed. Take care. ** "
+    echo " * The imgult has completed. Take care. * "
     echo " ****************************************************************************** "
     echo
   fi
