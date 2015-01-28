@@ -132,16 +132,20 @@ while [ -e imgult-files.txt ]; do
       wait
       echo "... TUNING FLUX CAPACITOR ..."
   else
-    rm imgult-files.txt
     echo
-    echo "Original directory size:"
+    echo "*****************************************"
+    echo "... PRE-IMGULT TIME WARP ..."
+    echo "Execute pre-imgulted directory capacity outputting:"
     cat preImgultSize
-    rm preImgultSize
-    echo "Imgulted directory size:"
-    ## find out how directory size after imgulting
+    echo "Execute parametric cleaning sequence:"
+    rm -v preImgultSize imgult-files.txt
+    echo "Execute imgulted capacity outputting:"
+    ## find out directory size after imgulting
     du -hs ./
     echo
     echo "The imgult has completed. Take care."
+    echo "*****************************************"
+    echo
   fi
 done
 
