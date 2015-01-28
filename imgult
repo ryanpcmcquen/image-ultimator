@@ -133,18 +133,31 @@ while [ -e imgult-files.txt ]; do
       echo "... TUNING FLUX CAPACITOR ..."
   else
     echo
-    echo "*****************************************"
-    echo "... PRE-IMGULT TIME WARP ..."
-    echo "Execute pre-imgulted directory capacity outputting:"
+    ## thanks to patorjk.com/software/taag/
+    echo " ****************************************************************************** "
+    echo "                   ___           ___           ___           ___       ___      "
+    echo "       ___        /\__\         /\  \         /\__\         /\__\     /\  \     "
+    echo "      /\  \      /::|  |       /::\  \       /:/  /        /:/  /     \:\  \    "
+    echo "      \:\  \    /:|:|  |      /:/\:\  \     /:/  /        /:/  /       \:\  \   "
+    echo "      /::\__\  /:/|:|__|__   /:/  \:\  \   /:/  /  ___   /:/  /        /::\  \  "
+    echo "   __/:/\/__/ /:/ |::::\__\ /:/__/_\:\__\ /:/__/  /\__\ /:/__/        /:/\:\__\ "
+    echo "  /\/:/  /    \/__/--/:/  / \:\  /\ \/__/ \:\  \ /:/  / \:\  \       /:/  \/__/ "
+    echo "  \::/__/           /:/  /   \:\ \:\__\    \:\  /:/  /   \:\  \     /:/  /      "
+    echo "   \:\__\          /:/  /     \:\/:/  /     \:\/:/  /     \:\  \    \/__/       "
+    echo "    \/__/         /:/  /       \::/  /       \::/  /       \:\__\               "
+    echo "                  \/__/         \/__/         \/__/         \/__/               "
+    echo " ****************************************************************************** "
+    echo " ** ... PRE-IMGULT TIME WARP ... ** "
+    echo " ** Execute pre-imgulted directory capacity outputting: ** "
     cat preImgultSize
-    echo "Execute parametric cleaning sequence:"
+    echo " ** Execute parametric cleaning sequence: ** "
     rm -v preImgultSize imgult-files.txt
-    echo "Execute imgulted capacity outputting:"
+    echo " ** Execute imgulted capacity outputting: ** "
     ## find out directory size after imgulting
     du -hs ./
     echo
-    echo "The imgult has completed. Take care."
-    echo "*****************************************"
+    echo " ** The imgult has completed. Take care. ** "
+    echo " ****************************************************************************** "
     echo
   fi
 done
