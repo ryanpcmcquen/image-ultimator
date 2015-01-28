@@ -136,8 +136,8 @@ while [ -e imgult-files.txt ]; do
     echo
     echo "Original directory size:"
     cat preImgultSize
-    echo "Imgulted directory size:"
     rm preImgultSize
+    echo "Imgulted directory size:"
     ## find out how directory size after imgulting
     du -hs ./
     echo
