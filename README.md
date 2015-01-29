@@ -45,10 +45,14 @@ Run:
 
     imgult
 
+Or feed imgult directories or files directly:
 
-P.S. You may feed different qualities to imgult by running it like so (0-100, default is 84, only applies to JPGs):
+    imgult Downloads/ 1.png 2.jpg
 
-    imgult 70
+
+P.S. You may feed a different quality level to imgult by running it like so (0-100, default is 84, only applies to JPGs):
+
+    JPGQUAL=70 imgult
 
 
 ##### EXIF removal

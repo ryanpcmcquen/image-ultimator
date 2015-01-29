@@ -1,6 +1,8 @@
 #!/bin/sh
 ## imgult, the image-ultimator
 
+## thanks to B. Watson for lots of help  ;-)
+
 # Ryan P.C. McQuen | Everett, WA | ryan.q@linux.com
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,8 +28,10 @@
 BACKUPIMAGES=${BACKUPIMAGES:-false}
 EXIFREMOVE=${EXIFREMOVE:-true}
 
-## fancy syntax thanks to B. Watson
-OPTLEVEL=${1:-84}
+## override jpg quality by running imgult with
+## a different value, e.g.:
+## JPGQUAL=70 imgult
+JPGQUAL=${JPGQUAL:-84}
 
 ## file extensions are easily added now,
 ## thanks to B. Watson
@@ -67,7 +71,7 @@ fi
 du -hs ./ > preImgultSize
 
 ## this is what we call leaning toothpick syndrome
-find . -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.jpe' \
+find "$@" -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.jpe' \
   -o -iname '*.jfif' -o -iname '*.jif' -o -iname '*.jfi' -o -iname '*.thm' \
   -o -iname '*.png' -o -iname '*.apng' -o -iname '*.mng' -o -iname '*.gif' \
   -o -iname '*.svg' -o -iname '*.svgz' \) \
@@ -92,7 +96,7 @@ RUN_OVERLOAD_PROTECTION_ENCABULATOR
 egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
   $JPEGTRAN -verbose -outfile "$IMGULT_FILE" "$IMGULT_FILE" \
-  && jpegoptim -v -m$OPTLEVEL "$IMGULT_FILE" &
+  && jpegoptim -v -m${JPGQUAL} "$IMGULT_FILE" &
 done
 
 RUN_OVERLOAD_PROTECTION_ENCABULATOR
