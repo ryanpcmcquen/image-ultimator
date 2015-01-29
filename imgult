@@ -150,7 +150,7 @@ while [ -e imgult-files.txt ]; do
     echo "****************************************************************************** "
     echo
     echo "* ... PRE-IMGULT TIME WARP ... * "
-    echo "* Execute pre-imgulted directory capacity outputting: * "
+    echo "* Execute pre-imgulted capacity outputting: * "
     cat preImgultSize
     echo
     echo "* Execute parametric cleaning sequence: * "
