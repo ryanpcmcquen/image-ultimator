@@ -1,7 +1,7 @@
 #!/bin/sh
 ## imgult, the image-ultimator
 
-## thanks to B. Watson for lots of help  ;-)
+## thanks to B. Watson for lots of help  :^)
 
 # Ryan P.C. McQuen | Everett, WA | ryan.q@linux.com
 # This program is free software; you can redistribute it and/or modify
@@ -66,9 +66,9 @@ if [ -z "$(which exiv2)" ] || \
     exit 1
 fi
 
-## find out how big the directory is
+## find out how big the directory/files are
 ## so we can relish in the savings later
-du -hs ./ > preImgultSize
+du -hs "$@" > preImgultSize
 
 ## this is what we call leaning toothpick syndrome
 find "$@" -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.jpe' \
@@ -161,8 +161,8 @@ while [ -e imgult-files.txt ]; do
     rm -v preImgultSize imgult-files.txt
     echo
     echo "* Execute imgulted capacity outputting: * "
-    ## find out directory size after imgulting
-    du -hs ./
+    ## find the patented imgult savings!
+    du -hs "$@"
     echo
     echo "* The imgult has completed. Take care. * "
     echo "****************************************************************************** "
