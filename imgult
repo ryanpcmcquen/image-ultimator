@@ -70,21 +70,17 @@ fi
 ## so we can relish in the savings later
 du -hs "$@" > preImgultSize
 
-## this is what we call leaning toothpick syndrome
 ## bsd find needs a path to work, gnu find is smarter ...
 if [ -z "$@" ]; then
-  find . -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.jpe' \
-    -o -iname '*.jfif' -o -iname '*.jif' -o -iname '*.jfi' -o -iname '*.thm' \
-    -o -iname '*.png' -o -iname '*.apng' -o -iname '*.mng' -o -iname '*.gif' \
-    -o -iname '*.svg' -o -iname '*.svgz' \) \
-      > imgult-files.txt
-else
-  find "$@" -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.jpe' \
-    -o -iname '*.jfif' -o -iname '*.jif' -o -iname '*.jfi' -o -iname '*.thm' \
-    -o -iname '*.png' -o -iname '*.apng' -o -iname '*.mng' -o -iname '*.gif' \
-    -o -iname '*.svg' -o -iname '*.svgz' \) \
-      > imgult-files.txt
+  set .
 fi
+
+## this is what we call leaning toothpick syndrome
+find "$@" -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.jpe' \
+  -o -iname '*.jfif' -o -iname '*.jif' -o -iname '*.jfi' -o -iname '*.thm' \
+  -o -iname '*.png' -o -iname '*.apng' -o -iname '*.mng' -o -iname '*.gif' \
+  -o -iname '*.svg' -o -iname '*.svgz' \) \
+    > imgult-files.txt
 
 ## back it up!
 if [ "$BACKUPIMAGES" = true ]; then
