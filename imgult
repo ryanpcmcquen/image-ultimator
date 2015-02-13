@@ -22,6 +22,9 @@
 # along with this program (most likely, a file named COPYING). If
 # not, see <http://www.gnu.org/licenses/>.
 
+## override with DEPENDENCY_CHECKER=off
+DEPENDENCY_CHECKER=${DEPENDENCY_CHECKER:-on}
+
 ## prepend imgult on the command line with
 ## BACKUPIMAGES=true  (to back everything up)
 ## EXIFREMOVE=n  (to keep EXIF data)
@@ -53,17 +56,19 @@ if [ -z "$JPEGTRAN" ]; then
 fi
 
 ## check to make sure we can be awesome  ;^)
-if [ -z "$(which exiv2)" ] || \
-  [ -z "$JPEGTRAN" ] || [ -z "$(which jpegoptim)" ] || \
-  [ -z "$(which pngquant)" ] || [ -z "$(which optipng)" ] || \
-  [ -z "$(which gifsicle)" ] || [ -z "$(which svgo)" ]; then
-    echo
-    echo "You don't have all the imgult dependencies."
-    echo
-    echo "You need: exiv2, jpegtran (mozjpeg), jpegoptim, pngquant, "
-    echo "optipng, gifsicle and svgo."
-    echo
-    exit 1
+if [ "${DEPENDENCY_CHECKER}" = on ]; then
+  if [ -z "$(which exiv2)" ] || \
+    [ -z "$JPEGTRAN" ] || [ -z "$(which jpegoptim)" ] || \
+    [ -z "$(which pngquant)" ] || [ -z "$(which optipng)" ] || \
+    [ -z "$(which gifsicle)" ] || [ -z "$(which svgo)" ]; then
+      echo
+      echo "You don't have all the imgult dependencies."
+      echo
+      echo "You need: exiv2, jpegtran (mozjpeg), jpegoptim, pngquant, "
+      echo "optipng, gifsicle and svgo."
+      echo
+      exit 1
+  fi
 fi
 
 ## find out how big the directory/files are
