@@ -50,7 +50,7 @@ Or feed imgult directories or files directly:
     imgult Downloads/ 1.png 2.jpg
 
 
-P.S. You may feed a different quality level to imgult by running it like so (0-100, default is 84, only applies to JPGs):
+P.S. You may feed a different quality level to imgult by running it like so (0-100, default is 87, only applies to JPGs):
 
     JPGQUAL=70 imgult
 
