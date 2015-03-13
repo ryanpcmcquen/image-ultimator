@@ -34,7 +34,7 @@ EXIFREMOVE=${EXIFREMOVE:-true}
 ## override jpg quality by running imgult with
 ## a different value, e.g.:
 ## JPGQUAL=70 imgult
-JPGQUAL=${JPGQUAL:-84}
+JPGQUAL=${JPGQUAL:-87}
 
 ## file extensions are easily added now,
 ## thanks to B. Watson
@@ -44,7 +44,7 @@ GIFEXTENSIONS="gif"
 SVGEXTENSIONS="svg svgz"
 
 RUN_OVERLOAD_PROTECTION_ENCABULATOR() {
-  while [ `jobs | wc -l` -gt 9 ]; do
+  while [ `jobs | wc -l` -gt 7 ]; do
     wait
     echo "*-_- OVERLOAD ENCABULATOR PROTECTION INITIATED -_-*"
   done
