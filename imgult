@@ -75,8 +75,16 @@ fi
 ## so we can relish in the savings later
 du -hs "$@" > preImgultSize
 
-## bsd find needs a path to work, gnu find is smarter ...
-if [ -z "$@" ]; then
+## bsd find needs a path to work, gnu find is smarter,
+## so we set it here if empty ...
+## you may think this loop makes no sense,
+## but if the user feeds a path with regex to imgult,
+## e.g. `imgult *png`, then test gets confused and
+## errors, separating it with the no-op `:` gets
+## around this and keeps it posix  ;-)
+if [ -n '"$@"' ]; then
+  :
+else
   set .
 fi
 
