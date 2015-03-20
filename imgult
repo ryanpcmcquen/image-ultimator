@@ -75,17 +75,15 @@ fi
 ## so we can relish in the savings later
 du -hs "$@" > preImgultSize
 
-## bsd find needs a path to work, gnu find is smarter,
-## so we set it here if empty ...
-## you may think this loop makes no sense,
-## but if the user feeds a path with regex to imgult,
-## e.g. `imgult *png`, then test gets confused and
-## errors, separating it with the no-op `:` gets
-## around this and keeps it posix  ;-)
-if [ -n '"$@"' ]; then
-  :
-else
-  set .
+## bsd find needs a path to work, gnu find does not;
+## so we set it here if positional parameters are 
+## less than 1
+##
+## i was originally checking if "$@" was empty,
+## but it turns out that is a nightmare if regex
+## paths are fed to imgult
+if [ "$#" -lt 1 ]; then
+  set -- .
 fi
 
 ## this is what we call leaning toothpick syndrome
@@ -187,5 +185,3 @@ while [ -e imgult-files.txt ]; do
     echo
   fi
 done
-
-
