@@ -51,7 +51,9 @@ RUN_OVERLOAD_PROTECTION_ENCABULATOR() {
 }
 
 if [ -z "$JPEGTRAN" ]; then
-  MACOSJPEGTRAN=`find /usr/local/Cellar/mozjpeg -name jpegtran | tail -1 | cut -d/ -f1-7`
+  if [ `uname` = "Darwin" ]; then
+    MACOSJPEGTRAN=`find /usr/local/Cellar/mozjpeg -name jpegtran | tail -1 | cut -d/ -f1-7`
+  fi
   export PATH=$MACOSJPEGTRAN:/opt/libmozjpeg/bin:/opt/mozjpeg/bin:$PATH
   JPEGTRAN="$(which jpegtran)"
 fi
@@ -83,7 +85,7 @@ du -hs "$@" > preImgultSize
 ## i was originally checking if "$@" was empty,
 ## but it turns out that is a nightmare if regex
 ## paths are fed to imgult
-if [ "$#" -lt 1 ]; then
+if [ $# -eq 0 ]; then
   set -- .
 fi
 
