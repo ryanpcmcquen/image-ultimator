@@ -80,7 +80,7 @@ du -hs "$@" > preImgultSize
 
 ## bsd find needs a path to work, gnu find does not;
 ## so we set it here if positional parameters are 
-## less than 1
+## equal to 0
 ##
 ## i was originally checking if "$@" was empty,
 ## but it turns out that is a nightmare if regex
