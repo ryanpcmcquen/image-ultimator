@@ -5,7 +5,7 @@ image-ultimator
 imgult is a tiny and mighty script that will recursively loop through a directory and its subdirectories optimizing all GIFs, JPGs, PNGs and SVGs (the script supports several types of these kinds of extensions, check the source to see). It also removes EXIF data (run with ```EXIFREMOVE=n``` to keep EXIF data). You can backup the images by running it with (```BACKUPIMAGES=true```).
 
 
-#### I just want to run it once (it will kindly remove itself):
+### I just want to run it once (it will kindly remove itself):
 
     curl https://raw.githubusercontent.com/ryanpcmcquen/image-ultimator/master/imgult | sh
 
@@ -30,6 +30,15 @@ Linux & Mac:
 
     npm install -g svgo
 
+## Mac users:
+
+Upgrading ```bash``` is recommended, because of this issue: https://github.com/ryanpcmcquen/image-ultimator/issues/3
+
+You can use homebrew, or whatever your preferred package manager is:
+
+    brew install bash
+
+[I know that this issue is not present in ```bash >= 4.2```.]
 
 # USE AT YOUR OWN RISK!
 
