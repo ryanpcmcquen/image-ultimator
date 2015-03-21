@@ -30,15 +30,6 @@ Linux & Mac:
 
     npm install -g svgo
 
-## Mac users:
-
-Upgrading ```bash``` is recommended, because of this issue: https://github.com/ryanpcmcquen/image-ultimator/issues/3
-
-You can use homebrew, or whatever your preferred package manager is:
-
-    brew install bash
-
-[I know that this issue is not present in ```bash >= 4.2```.]
 
 # USE AT YOUR OWN RISK!
 
