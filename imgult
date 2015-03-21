@@ -51,7 +51,8 @@ RUN_OVERLOAD_PROTECTION_ENCABULATOR() {
 }
 
 if [ -z "$JPEGTRAN" ]; then
-  export PATH=/usr/local/Cellar/mozjpeg/*/bin:/opt/libmozjpeg/bin:/opt/mozjpeg/bin:$PATH
+  MACOSJPEGTRAN=`find /usr/local/Cellar/mozjpeg -name jpegtran | tail -1 | cut -d/ -f1-7`
+  export PATH=$MACOSJPEGTRAN:/opt/libmozjpeg/bin:/opt/mozjpeg/bin:$PATH
   JPEGTRAN="$(which jpegtran)"
 fi
 
