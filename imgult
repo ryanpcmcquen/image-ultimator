@@ -34,7 +34,7 @@ EXIFREMOVE=${EXIFREMOVE:-true}
 ## override jpg quality by running imgult with
 ## a different value, e.g.:
 ## JPGQUAL=70 imgult
-JPGQUAL=${JPGQUAL:-87}
+JPGQUAL=${JPGQUAL:-99}
 
 ## file extensions are easily added now,
 ## thanks to B. Watson
