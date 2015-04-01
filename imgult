@@ -31,11 +31,6 @@ DEPENDENCY_CHECKER=${DEPENDENCY_CHECKER:-on}
 BACKUPIMAGES=${BACKUPIMAGES:-false}
 EXIFREMOVE=${EXIFREMOVE:-true}
 
-## override jpg quality by running imgult with
-## a different value, e.g.:
-## JPGQUAL=70 imgult
-JPGQUAL=${JPGQUAL:-99}
-
 ## file extensions are easily added now,
 ## thanks to B. Watson
 JPGEXTENSIONS="jpg jpeg jpe jfif jif jfi thm"
@@ -115,7 +110,7 @@ RUN_OVERLOAD_PROTECTION_ENCABULATOR
 egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
   $JPEGTRAN -verbose -outfile "$IMGULT_FILE" "$IMGULT_FILE" \
-  && jpegoptim -v -m${JPGQUAL} "$IMGULT_FILE" &
+  && jpegoptim -v "$IMGULT_FILE" &
 done
 
 RUN_OVERLOAD_PROTECTION_ENCABULATOR
