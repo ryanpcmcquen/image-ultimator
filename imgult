@@ -65,6 +65,11 @@ if [ "${DEPENDENCY_CHECKER}" = on ]; then
       echo "You need: exiv2, jpegtran (mozjpeg), jpegoptim, pngquant, "
       echo "optipng, gifsicle and svgo."
       echo
+      echo "... Or decide your own fate and `export DEPENDENCY_CHECKER=off`."
+      echo
+      echo "Good luck!"
+      echo
+      echo
       exit 1
   fi
 fi
