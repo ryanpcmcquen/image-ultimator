@@ -39,7 +39,7 @@ GIFEXTENSIONS="gif"
 SVGEXTENSIONS="svg svgz"
 
 RUN_OVERLOAD_PROTECTION_ENCABULATOR() {
-  while [ `ps | wc -l` -gt 13 ]; do
+  while [ `ps | wc -l` -gt 17 ]; do
     wait
     echo "*-_- OVERLOAD ENCABULATOR PROTECTION INITIATED -_-*"
   done
