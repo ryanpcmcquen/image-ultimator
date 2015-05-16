@@ -155,6 +155,7 @@ while [ -e imgult-files.txt ]; do
       wait
       echo "... TUNING FLUX CAPACITOR ..."
   else
+    wait
     echo
     ## thanks to patorjk.com/software/taag/
     echo "****************************************************************************** "
