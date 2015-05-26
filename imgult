@@ -157,6 +157,7 @@ while [ -e imgult-files.txt ]; do
   else
     wait
     wait
+    wait
     echo
     ## thanks to patorjk.com/software/taag/
     echo "****************************************************************************** "
