@@ -155,6 +155,9 @@ while [ -e imgult-files.txt ]; do
       wait
       echo "... TUNING FLUX CAPACITOR ..."
   else
+    ## 5 waits so fast comps don't finish early
+    wait
+    wait
     wait
     wait
     wait
