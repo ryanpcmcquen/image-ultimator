@@ -89,12 +89,16 @@ if [ $# -eq 0 ]; then
   set -- .
 fi
 
-## this is what we call leaning toothpick syndrome
+## below we have leaning toothpick syndrome
+## ...
+## notice how the output is filtered with sed, in case
+## the user feeds a directory using tab completion, 
+## leading to a trailing slash, and ergo, double slashes
 find "$@" -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.jpe' \
   -o -iname '*.jfif' -o -iname '*.jif' -o -iname '*.jfi' -o -iname '*.thm' \
   -o -iname '*.png' -o -iname '*.apng' -o -iname '*.mng' -o -iname '*.gif' \
   -o -iname '*.svg' -o -iname '*.svgz' \) \
-    > imgult-files.txt
+    | sed 's@//@/@g' > imgult-files.txt
 
 ## back it up!
 if [ "$BACKUPIMAGES" = true ]; then
