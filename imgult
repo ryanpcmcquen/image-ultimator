@@ -39,9 +39,13 @@ GIFEXTENSIONS="gif"
 SVGEXTENSIONS="svg svgz"
 
 RUN_OVERLOAD_PROTECTION_ENCABULATOR() {
-  while [ `ps | wc -l` -gt 17 ]; do
-    wait
-    echo "*-_- OVERLOAD ENCABULATOR PROTECTION INITIATED -_-*"
+  while [ "`pgrep egrep`" ] || [ "`pgrep exiv2`" ] \
+    || [ "`pgrep jpegtran`" ] || [ "`pgrep jpegoptim`" ] \
+    || [ "`pgrep pngquant`" ] || [ "`pgrep optipng`" ] \
+    || [ "`pgrep gifsicle`" ] || [ "`pgrep svgo`" ]; \
+    do
+      wait
+      echo "*-_- OVERLOAD ENCABULATOR PROTECTION INITIATED -_-*"
   done
 }
 
