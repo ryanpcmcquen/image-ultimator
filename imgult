@@ -151,8 +151,6 @@ while read IMGULT_FILE; do
   svgo "$IMGULT_FILE"
 done
 
-RUN_OVERLOAD_PROTECTION_ENCABULATOR
-
 ## let everything complete
 while [ -e imgult-files.txt ]; do
   if [ "`pgrep egrep`" ] || [ "`pgrep exiv2`" ] \
