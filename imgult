@@ -39,13 +39,10 @@ GIFEXTENSIONS="gif"
 SVGEXTENSIONS="svg svgz"
 
 RUN_OVERLOAD_PROTECTION_ENCABULATOR() {
-  while [ "`pgrep egrep`" ] || [ "`pgrep exiv2`" ] \
-    || [ "`pgrep jpegtran`" ] || [ "`pgrep jpegoptim`" ] \
-    || [ "`pgrep pngquant`" ] || [ "`pgrep optipng`" ] \
-    || [ "`pgrep gifsicle`" ] || [ "`pgrep svgo`" ]; \
-    do
-      wait
-      echo "*-_- OVERLOAD ENCABULATOR PROTECTION INITIATED -_-*"
+  ## wait if 2000 or more files are open
+  while [`lsof -c imgult | wc -l` -gt 1999]; do
+    wait
+    echo "*-_- OVERLOAD ENCABULATOR PROTECTION INITIATED -_-*"
   done
 }
 
@@ -150,6 +147,8 @@ egrep -i "($(echo $SVGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
   svgo "$IMGULT_FILE"
 done
+
+RUN_OVERLOAD_PROTECTION_ENCABULATOR
 
 ## let everything complete
 while [ -e imgult-files.txt ]; do
