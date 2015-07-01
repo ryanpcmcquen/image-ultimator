@@ -110,7 +110,7 @@ fi
 if [ "$EXIFREMOVE" = "true" ]; then
   cat imgult-files.txt | \
   while read IMGULT_FILE; do
-    exiv2 -v rm "$IMGULT_FILE" &
+    exec exiv2 -v rm "$IMGULT_FILE" &
   done
 fi
 
@@ -119,7 +119,7 @@ RUN_OVERLOAD_PROTECTION_ENCABULATOR
 ## standard options with verbosity
 egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
-  $JPEGTRAN -verbose -outfile "$IMGULT_FILE" "$IMGULT_FILE" \
+  exec $JPEGTRAN -verbose -outfile "$IMGULT_FILE" "$IMGULT_FILE" \
   && jpegoptim -v "$IMGULT_FILE" &
 done
 
@@ -128,7 +128,7 @@ RUN_OVERLOAD_PROTECTION_ENCABULATOR
 ## standard options with verbosity
 egrep -i "($(echo $PNGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
-  pngquant -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE" \
+  exec pngquant -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE" \
   && optipng -v "$IMGULT_FILE" &
 done
 
@@ -138,21 +138,22 @@ RUN_OVERLOAD_PROTECTION_ENCABULATOR
 ## it is an 'O' as in Oxford, not a zero (0)
 egrep -i "($(echo $GIFEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
-  gifsicle -V -b -O3 "$IMGULT_FILE" &
+  exec gifsicle -V -b -O3 "$IMGULT_FILE" &
 done
 
 RUN_OVERLOAD_PROTECTION_ENCABULATOR
 
 egrep -i "($(echo $SVGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 while read IMGULT_FILE; do
-  svgo "$IMGULT_FILE"
+  exec svgo "$IMGULT_FILE" &
 done
 
 RUN_OVERLOAD_PROTECTION_ENCABULATOR
 
 ## let everything complete
 while [ -e imgult-files.txt ]; do
-  if [ "`pgrep egrep`" ] || [ "`pgrep exiv2`" ] \
+  if [ "`pgrep egrep`" ] \
+    || [ "`pgrep exiv2`" ] || [ "`pgrep read`" ] \
     || [ "`pgrep jpegtran`" ] || [ "`pgrep jpegoptim`" ] \
     || [ "`pgrep pngquant`" ] || [ "`pgrep optipng`" ] \
     || [ "`pgrep gifsicle`" ] || [ "`pgrep svgo`" ] \
@@ -160,6 +161,7 @@ while [ -e imgult-files.txt ]; do
       wait
       echo "... TUNING FLUX CAPACITOR ..."
   else
+    RUN_OVERLOAD_PROTECTION_ENCABULATOR
     ## 5 waits so fast comps don't finish early
     wait
     wait
