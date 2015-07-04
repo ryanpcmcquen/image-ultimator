@@ -39,8 +39,8 @@ GIFEXTENSIONS="gif"
 SVGEXTENSIONS="svg svgz"
 
 RUN_OVERLOAD_PROTECTION_ENCABULATOR() {
-  ## wait if 2000 or more files are open
-  while [ $(lsof -c imgult | wc -l) -gt 1999 ]; do
+  ## wait if 20000 or more files are open
+  while [ $(lsof -u `whoami` | wc -l) -gt 19999 ]; do
     wait
     echo "*-_- OVERLOAD ENCABULATOR PROTECTION INITIATED -_-*"
   done
