@@ -161,13 +161,8 @@ while [ -e imgult-files.txt ]; do
       wait
       echo "... TUNING FLUX CAPACITOR ..."
   else
-    RUN_OVERLOAD_PROTECTION_ENCABULATOR
-    ## 5 waits so fast comps don't finish early
-    wait
-    wait
-    wait
-    wait
-    wait
+    ## calculate the new size here, so fast comps don't finish early
+    du -hs "$@" > postImgultSize
     echo
     ## thanks to patorjk.com/software/taag/
     echo "****************************************************************************** "
@@ -189,12 +184,12 @@ while [ -e imgult-files.txt ]; do
     echo "* Execute pre-imgulted capacity outputting: * "
     cat preImgultSize
     echo
-    echo "* Execute parametric cleaning sequence: * "
-    rm -v preImgultSize imgult-files.txt
-    echo
     echo "* Execute imgulted capacity outputting: * "
     ## find the patented imgult savings!
-    du -hs "$@"
+    cat postImgultSize
+    echo
+    echo "* Execute parametric cleaning sequence: * "
+    rm -v preImgultSize postImgultSize imgult-files.txt
     echo
     echo "* The imgult has completed. Take care. * "
     echo "****************************************************************************** "
