@@ -48,7 +48,7 @@ RUN_OVERLOAD_PROTECTION_ENCABULATOR() {
 
 if [ -z "$JPEGTRAN" ]; then
   if [ `uname` = "Darwin" ]; then
-    MACOSJPEGTRAN=`find /usr/local/Cellar/mozjpeg -name jpegtran | tail -1 | cut -d/ -f1-7`
+    MACOSJPEGTRAN=`find /usr/local/Cellar/mozjpeg -name jpegtran | sort | tail -1 | cut -d/ -f1-7`
   fi
   export PATH=$MACOSJPEGTRAN:/opt/libmozjpeg/bin:/opt/mozjpeg/bin:$PATH
   JPEGTRAN="$(which jpegtran)"
