@@ -22,8 +22,9 @@
 # along with this program (most likely, a file named COPYING). If
 # not, see <http://www.gnu.org/licenses/>.
 
-## override with DEPENDENCY_CHECKER=off
-DEPENDENCY_CHECKER=${DEPENDENCY_CHECKER:-on}
+## don't output file size changes by default, because du is slow
+## override with SPACE_SAVING_CALC=on
+SPACE_SAVING_CALC=${SPACE_SAVING_CALC:-off}
 
 ## prepend imgult on the command line with
 ## BACKUPIMAGES=true  (to back everything up)
@@ -38,14 +39,6 @@ PNGEXTENSIONS="png apng mng"
 GIFEXTENSIONS="gif"
 SVGEXTENSIONS="svg svgz"
 
-RUN_OVERLOAD_PROTECTION_ENCABULATOR() {
-  ## wait if 20000 or more files are open
-  while [ $(lsof -u `whoami` | wc -l) -gt 19999 ]; do
-    wait
-    echo "*-_- OVERLOAD ENCABULATOR PROTECTION INITIATED -_-*"
-  done
-}
-
 if [ -z "$JPEGTRAN" ]; then
   if [ `uname` = "Darwin" ]; then
     MACOSJPEGTRAN=`find /usr/local/Cellar/mozjpeg -name jpegtran | sort | tail -1 | cut -d/ -f1-7`
@@ -54,30 +47,11 @@ if [ -z "$JPEGTRAN" ]; then
   JPEGTRAN="$(which jpegtran)"
 fi
 
-## check to make sure we can be awesome  ;^)
-if [ "${DEPENDENCY_CHECKER}" = on ]; then
-  if [ -z "$(which exiv2)" ] || \
-    [ -z "$JPEGTRAN" ] || [ -z "$(which jpegoptim)" ] || \
-    [ -z "$(which pngquant)" ] || [ -z "$(which optipng)" ] || \
-    [ -z "$(which gifsicle)" ] || [ -z "$(which svgo)" ]; then
-      echo
-      echo "You don't have all the imgult dependencies."
-      echo
-      echo "You need: exiv2, jpegtran (mozjpeg), jpegoptim, pngquant, "
-      echo "optipng, gifsicle and svgo."
-      echo
-      echo "... Or decide your own fate and `export DEPENDENCY_CHECKER=off`."
-      echo
-      echo "Good luck!"
-      echo
-      echo
-      exit 1
-  fi
+if [ "${SPACE_SAVING_CALC}" = "on" ]; then
+  ## find out how big the directory/files are
+  ## so we can relish in the savings later
+  du -hs "$@" > preImgultSize
 fi
-
-## find out how big the directory/files are
-## so we can relish in the savings later
-du -hs "$@" > preImgultSize
 
 ## bsd find needs a path to work, gnu find does not;
 ## so we set it here if positional parameters are 
@@ -109,46 +83,66 @@ fi
 ## clear out that exif!
 if [ "$EXIFREMOVE" = "true" ]; then
   cat imgult-files.txt | \
-  while read IMGULT_FILE; do
-    exec exiv2 -v rm "$IMGULT_FILE" &
-  done
+  if [ "$(which exiv2)" ]; then
+    while read IMGULT_FILE; do
+      exec exiv2 -v rm "$IMGULT_FILE" &
+    done
+  else
+    echo
+    echo "You need to install exiv2 for exif support."
+    echo
+  fi
 fi
-
-RUN_OVERLOAD_PROTECTION_ENCABULATOR
 
 ## standard options with verbosity
 egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
-while read IMGULT_FILE; do
-  exec $JPEGTRAN -verbose -outfile "$IMGULT_FILE" "$IMGULT_FILE" \
-  && jpegoptim -v "$IMGULT_FILE" &
-done
-
-RUN_OVERLOAD_PROTECTION_ENCABULATOR
+if [ "$JPEGTRAN" ] && [ "$(which jpegoptim)" ]; then
+  while read IMGULT_FILE; do
+    exec $JPEGTRAN -verbose -outfile "$IMGULT_FILE" "$IMGULT_FILE" \
+    && jpegoptim -v "$IMGULT_FILE" &
+  done
+else
+  echo
+  echo "You need to install jpegtran (mozjpeg) and jpegoptim for jpg support."
+  echo
+fi
 
 ## standard options with verbosity
 egrep -i "($(echo $PNGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
-while read IMGULT_FILE; do
-  exec pngquant -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE" \
-  && optipng -v "$IMGULT_FILE" &
-done
-
-RUN_OVERLOAD_PROTECTION_ENCABULATOR
+if [ "$(which pngquant)" ] && [ "$(which optipng)" ]; then
+  while read IMGULT_FILE; do
+    exec pngquant -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE" \
+    && optipng -v "$IMGULT_FILE" &
+  done
+else
+  echo
+  echo "You need to install pngquant and optipng for png support."
+  echo
+fi
 
 ## -b keeps the filename, -O3 uses highest optimization level
 ## it is an 'O' as in Oxford, not a zero (0)
 egrep -i "($(echo $GIFEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
-while read IMGULT_FILE; do
-  exec gifsicle -V -b -O3 "$IMGULT_FILE" &
-done
-
-RUN_OVERLOAD_PROTECTION_ENCABULATOR
+if [ "$(which gifsicle)" ]; then
+  while read IMGULT_FILE; do
+    exec gifsicle -V -b -O3 "$IMGULT_FILE" &
+  done
+else
+  echo
+  echo "You need to install gifsicle for gif support."
+  echo
+fi
 
 egrep -i "($(echo $SVGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
-while read IMGULT_FILE; do
-  exec svgo "$IMGULT_FILE" &
-done
-
-RUN_OVERLOAD_PROTECTION_ENCABULATOR
+if [ "$(which gifsicle)" ]; then
+  while read IMGULT_FILE; do
+    exec svgo "$IMGULT_FILE" &
+  done
+else
+  echo
+  echo "You need to install svgo for svg support."
+  echo
+fi
 
 ## let everything complete
 while [ -e imgult-files.txt ]; do
@@ -161,8 +155,10 @@ while [ -e imgult-files.txt ]; do
       wait
       echo "... TUNING FLUX CAPACITOR ..."
   else
-    ## calculate the new size here, so fast comps don't finish early
-    du -hs "$@" > postImgultSize
+    if [ "${SPACE_SAVING_CALC}" = "on" ]; then
+      ## calculate the new size here, so fast comps don't finish early
+      du -hs "$@" > postImgultSize
+    fi
     echo
     ## thanks to patorjk.com/software/taag/
     echo "****************************************************************************** "
@@ -180,16 +176,21 @@ while [ -e imgult-files.txt ]; do
     echo
     echo "****************************************************************************** "
     echo
-    echo "* ... PRE-IMGULT TIME WARP ... * "
-    echo "* Execute pre-imgulted capacity outputting: * "
-    cat preImgultSize
-    echo
-    echo "* Execute imgulted capacity outputting: * "
-    ## find the patented imgult savings!
-    cat postImgultSize
-    echo
-    echo "* Execute parametric cleaning sequence: * "
-    rm -v preImgultSize postImgultSize imgult-files.txt
+    if [ "${SPACE_SAVING_CALC}" = "on" ]; then
+      echo "* ... PRE-IMGULT TIME WARP ... * "
+      echo "* Execute pre-imgulted capacity outputting: * "
+      cat preImgultSize
+      echo
+      echo "* Execute imgulted capacity outputting: * "
+      ## find the patented imgult savings!
+      cat postImgultSize
+      echo
+      echo "* Execute parametric cleaning sequence: * "
+      rm -v preImgultSize postImgultSize imgult-files.txt
+    else
+      echo "* Execute parametric cleaning sequence: * "
+      rm -v imgult-files.txt
+    fi
     echo
     echo "* The imgult has completed. Take care. * "
     echo "****************************************************************************** "
