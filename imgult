@@ -80,10 +80,10 @@ if [ "$BACKUPIMAGES" = true ]; then
   rsync -avz --files-from=imgult-files.txt $PWD imgult-backup-files/
 fi
 
-## clear out that exif!
 if [ "$EXIFREMOVE" = "true" ]; then
-  cat imgult-files.txt | \
   if [ "$(which exiv2)" ]; then
+    ## clear out that exif!
+    cat imgult-files.txt | \
     while read IMGULT_FILE; do
       exec exiv2 -v rm "$IMGULT_FILE" &
     done
@@ -94,9 +94,9 @@ if [ "$EXIFREMOVE" = "true" ]; then
   fi
 fi
 
-## standard options with verbosity
-egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 if [ "$JPEGTRAN" ] && [ "$(which jpegoptim)" ]; then
+  ## standard options with verbosity
+  egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
   while read IMGULT_FILE; do
     exec $JPEGTRAN -verbose -outfile "$IMGULT_FILE" "$IMGULT_FILE" \
     && jpegoptim -v "$IMGULT_FILE" &
@@ -107,9 +107,9 @@ else
   echo
 fi
 
-## standard options with verbosity
-egrep -i "($(echo $PNGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 if [ "$(which pngquant)" ] && [ "$(which optipng)" ]; then
+  ## standard options with verbosity
+  egrep -i "($(echo $PNGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
   while read IMGULT_FILE; do
     exec pngquant -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE" \
     && optipng -v "$IMGULT_FILE" &
@@ -120,10 +120,10 @@ else
   echo
 fi
 
-## -b keeps the filename, -O3 uses highest optimization level
-## it is an 'O' as in Oxford, not a zero (0)
-egrep -i "($(echo $GIFEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
 if [ "$(which gifsicle)" ]; then
+  ## -b keeps the filename, -O3 uses highest optimization level
+  ## it is an 'O' as in Oxford, not a zero (0)
+  egrep -i "($(echo $GIFEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
   while read IMGULT_FILE; do
     exec gifsicle -V -b -O3 "$IMGULT_FILE" &
   done
@@ -133,8 +133,8 @@ else
   echo
 fi
 
-egrep -i "($(echo $SVGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
-if [ "$(which gifsicle)" ]; then
+if [ "$(which svgo)" ]; then
+  egrep -i "($(echo $SVGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
   while read IMGULT_FILE; do
     exec svgo "$IMGULT_FILE" &
   done
