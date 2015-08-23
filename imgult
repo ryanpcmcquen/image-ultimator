@@ -6,7 +6,7 @@
 # Ryan P.C. McQuen | Everett, WA | ryan.q@linux.com
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
+# the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version, with the following exception:
 # the text of the GPL license may be omitted.
 
@@ -41,9 +41,13 @@ SVGEXTENSIONS="svg svgz"
 
 if [ -z "$JPEGTRAN" ]; then
   if [ `uname` = "Darwin" ]; then
-    MACOSJPEGTRAN=`find /usr/local/Cellar/mozjpeg -name jpegtran | sort | tail -1 | cut -d/ -f1-7`
+    for DIR in /usr/local/Cellar/mozjpeg/*/bin
+      do PATH="$DIR:$PATH"
+    done
   fi
-  export PATH=$MACOSJPEGTRAN:/opt/libmozjpeg/bin:/opt/mozjpeg/bin:$PATH
+  for DIR in /opt/*/bin
+    do PATH="$DIR:$PATH"
+  done
   JPEGTRAN="$(which jpegtran)"
 fi
 
