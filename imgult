@@ -20,7 +20,7 @@
 
 # You may have received a copy of the GNU General Public License
 # along with this program (most likely, a file named COPYING). If
-# not, see <http://www.gnu.org/licenses/>.
+# not, see <https://www.gnu.org/licenses/>.
 
 ## don't output file size changes by default, because du is slow
 ## override with SPACE_SAVING_CALC=on
@@ -58,7 +58,7 @@ if [ "${SPACE_SAVING_CALC}" = "on" ]; then
 fi
 
 ## bsd find needs a path to work, gnu find does not;
-## so we set it here if positional parameters are 
+## so we set it here if positional parameters are
 ## equal to 0
 ##
 ## i was originally checking if "$@" was empty,
@@ -71,8 +71,10 @@ fi
 ## below we have leaning toothpick syndrome
 ## ...
 ## notice how the output is filtered with sed, in case
-## the user feeds a directory using tab completion, 
+## the user feeds a directory using tab completion,
 ## leading to a trailing slash, and ergo, double slashes
+## (most systems are fine with double slashes,
+## but i avoid assumptions if possible)
 find "$@" -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.jpe' \
   -o -iname '*.jfif' -o -iname '*.jif' -o -iname '*.jfi' -o -iname '*.thm' \
   -o -iname '*.png' -o -iname '*.apng' -o -iname '*.mng' -o -iname '*.gif' \
@@ -89,7 +91,7 @@ if [ "$EXIFREMOVE" = "true" ]; then
     ## clear out that exif!
     cat imgult-files.txt | \
     while read IMGULT_FILE; do
-      exec exiv2 -v rm "$IMGULT_FILE" &
+      exec nice -n11 exiv2 -v rm "$IMGULT_FILE" &
     done
   else
     echo
@@ -102,8 +104,8 @@ if [ "$JPEGTRAN" ] && [ "$(which jpegoptim)" ]; then
   ## standard options with verbosity
   egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
   while read IMGULT_FILE; do
-    exec $JPEGTRAN -verbose -outfile "$IMGULT_FILE" "$IMGULT_FILE" \
-    && jpegoptim -v "$IMGULT_FILE" &
+    exec nice -n12 $JPEGTRAN -verbose -outfile "$IMGULT_FILE" "$IMGULT_FILE" \
+    && nice -n12 jpegoptim -v "$IMGULT_FILE" &
   done
 else
   echo
@@ -115,8 +117,8 @@ if [ "$(which pngquant)" ] && [ "$(which optipng)" ]; then
   ## standard options with verbosity
   egrep -i "($(echo $PNGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
   while read IMGULT_FILE; do
-    exec pngquant -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE" \
-    && optipng -v "$IMGULT_FILE" &
+    exec nice -n13 pngquant -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE" \
+    && nice -n13 optipng -v "$IMGULT_FILE" &
   done
 else
   echo
@@ -129,7 +131,7 @@ if [ "$(which gifsicle)" ]; then
   ## it is an 'O' as in Oxford, not a zero (0)
   egrep -i "($(echo $GIFEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
   while read IMGULT_FILE; do
-    exec gifsicle -V -b -O3 "$IMGULT_FILE" &
+    exec nice -n14 gifsicle -V -b -O3 "$IMGULT_FILE" &
   done
 else
   echo
@@ -140,7 +142,7 @@ fi
 if [ "$(which svgo)" ]; then
   egrep -i "($(echo $SVGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
   while read IMGULT_FILE; do
-    exec svgo "$IMGULT_FILE" &
+    exec nice -n15 svgo "$IMGULT_FILE" &
   done
 else
   echo
@@ -201,3 +203,4 @@ while [ -e imgult-files.txt ]; do
     echo
   fi
 done
+
