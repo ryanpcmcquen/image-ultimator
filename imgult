@@ -1,5 +1,5 @@
 #!/bin/sh
-## imgult, the image-ultimator v3.4.00--BETA by ryanpcmcquen
+## imgult, the image-ultimator v4.0.00 by ryanpcmcquen
 
 ## thanks to B. Watson for lots of help  :^)
 
@@ -87,12 +87,12 @@ find "$@" -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.jpe' \
   -o -iname '*.svg' -o -iname '*.svgz' \) \
     | sed 's@//@/@g' > ${IMGULT_FILES_LIST}
 
-## create this file if it doesn't exist
-[ ! -e ${IMGULT_PROCESSED_FILES_LIST} ] && touch ${IMGULT_PROCESSED_FILES_LIST}
-[ ! -e ${IMGULT_TEMP_FILES_LIST} ] && touch ${IMGULT_TEMP_FILES_LIST}
-## remove any files that were already processed
-grep -v -x -f ${IMGULT_PROCESSED_FILES_LIST} ${IMGULT_FILES_LIST} > ${IMGULT_TEMP_FILES_LIST}
-cp ${IMGULT_TEMP_FILES_LIST} ${IMGULT_FILES_LIST}
+## ignore any files that were already processed
+if [ -e ${IMGULT_PROCESSED_FILES_LIST} ]; then
+  echo "** ... IMGATCH SERVICE INITIATED ... **"
+  grep -v -x -f ${IMGULT_PROCESSED_FILES_LIST} ${IMGULT_FILES_LIST} > ${IMGULT_TEMP_FILES_LIST}
+  mv ${IMGULT_TEMP_FILES_LIST} ${IMGULT_FILES_LIST}
+fi
 
 ## back it up!
 if [ "$BACKUPIMAGES" = true ]; then
@@ -117,9 +117,9 @@ if [ "$JPEGTRAN" ] && [ "$(which jpegoptim)" ]; then
   ## standard options with verbosity
   egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" ${IMGULT_FILES_LIST} | \
   while read IMGULT_FILE; do
-    exec nice -n16 $JPEGTRAN -verbose -outfile "$IMGULT_FILE" "$IMGULT_FILE" \
+    exec echo "$IMGULT_FILE" >> "${IMGULT_PROCESSED_FILES_LIST}" \
+    && nice -n16 $JPEGTRAN -verbose -outfile "$IMGULT_FILE" "$IMGULT_FILE" \
     && nice -n16 jpegoptim -v "$IMGULT_FILE" &
-    echo "$IMGULT_FILE" >> "${IMGULT_PROCESSED_FILES_LIST}" &
   done
 else
   echo
@@ -131,9 +131,9 @@ if [ "$(which pngquant)" ] && [ "$(which optipng)" ]; then
   ## standard options with verbosity
   egrep -i "($(echo $PNGEXTENSIONS | tr ' ' '|')\$)" ${IMGULT_FILES_LIST} | \
   while read IMGULT_FILE; do
-    exec nice -n17 pngquant -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE" \
+    exec echo "$IMGULT_FILE" >> "${IMGULT_PROCESSED_FILES_LIST}" \
+    && nice -n17 pngquant -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE" \
     && nice -n17 optipng -v "$IMGULT_FILE" &
-    echo "$IMGULT_FILE" >> "${IMGULT_PROCESSED_FILES_LIST}" &
   done
 else
   echo
@@ -146,8 +146,8 @@ if [ "$(which gifsicle)" ]; then
   ## it is an 'O' as in Oxford, not a zero (0)
   egrep -i "($(echo $GIFEXTENSIONS | tr ' ' '|')\$)" ${IMGULT_FILES_LIST} | \
   while read IMGULT_FILE; do
-    exec nice -n18 gifsicle -V -b -O3 "$IMGULT_FILE" &
-    echo "$IMGULT_FILE" >> "${IMGULT_PROCESSED_FILES_LIST}" &
+    exec echo "$IMGULT_FILE" >> "${IMGULT_PROCESSED_FILES_LIST}" \
+    && nice -n18 gifsicle -V -b -O3 "$IMGULT_FILE" &
   done
 else
   echo
@@ -158,8 +158,8 @@ fi
 if [ "$(which svgo)" ]; then
   egrep -i "($(echo $SVGEXTENSIONS | tr ' ' '|')\$)" ${IMGULT_FILES_LIST} | \
   while read IMGULT_FILE; do
-    exec nice -n19 svgo "$IMGULT_FILE" &
-    echo "$IMGULT_FILE" >> "${IMGULT_PROCESSED_FILES_LIST}" &
+    exec echo "$IMGULT_FILE" >> "${IMGULT_PROCESSED_FILES_LIST}" \
+    && nice -n19 svgo "$IMGULT_FILE" &
   done
 else
   echo
