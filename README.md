@@ -4,6 +4,11 @@ image-ultimator
 ## What is it?
 imgult is a tiny and mighty script that will recursively loop through a directory and its subdirectories optimizing all GIFs, JPGs, PNGs and SVGs (the script supports several types of these kinds of extensions, check the source to see). It also removes EXIF data (run with ```EXIFREMOVE=n``` to keep EXIF data). You can backup the images by running it with (```BACKUPIMAGES=true```).
 
+Check out the [imgult site](https://imgult.github.io)!
+
+## What do people say about it?
+
+[Torkiliuz](https://github.com/Torkiliuz) succesfully tested `imgult` against a **26TB** sample that had approximately **140GB** of images. Wow! He made some helpful suggestions for the `4.0.00` release. Because of that, `imgult` now creates a file called `imgult-processed-files.txt` as a record of previously processed stuff. You can delete it if you do not mind files being processed again. :tada:
 
 ### I just want to run it once (it will kindly remove itself):
 
@@ -18,6 +23,16 @@ imgult is a tiny and mighty script that will recursively loop through a director
 
 Before you run it you need these amazing programs!
 
+```
+jpegoptim
+mozjpeg
+optipng
+pngquant
+gifsicle
+exiv2
+svgo
+```
+
 Linux:
 
     sbopkg -i jpegoptim -i mozjpeg -i optipng -i pngquant -i gifsicle
@@ -31,7 +46,7 @@ Linux & Mac:
     npm install -g svgo
 
 
-# USE AT YOUR OWN RISK!
+# USE IMGULT AT YOUR OWN RISK!
 
 Just run this command in any directory with images, note that it will *OVERWRITE* images (GIFs, JPGs, PNGs & SVGs) and loop recursively through all directories INSIDE the directory you run it in. There is a BACKUP option though.  ;^)
 
@@ -65,4 +80,3 @@ To back up all original images to ```imgult-backup-files/```, run:
 This can be run with the EXIF option as well:
 
     EXIFREMOVE=n BACKUPIMAGES=true imgult
-
