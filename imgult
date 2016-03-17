@@ -1,5 +1,5 @@
 #!/bin/sh
-## imgult, the image-ultimator
+## imgult, the image-ultimator v4.0.00 by ryanpcmcquen
 
 ## thanks to B. Watson for lots of help  :^)
 
@@ -31,6 +31,12 @@ SPACE_SAVING_CALC=${SPACE_SAVING_CALC:-off}
 ## EXIFREMOVE=n  (to keep EXIF data)
 BACKUPIMAGES=${BACKUPIMAGES:-false}
 EXIFREMOVE=${EXIFREMOVE:-true}
+
+## create a log of files
+IMGULT_FILES_LIST=${IMGULT_FILES_LIST:-imgult-files.txt}
+IMGULT_TEMP_FILES_LIST=${IMGULT_TEMP_FILES_LIST:-imgult-temp-files.txt}
+## log processed files so they can be skipped on subsequent runs
+IMGULT_PROCESSED_FILES_LIST=${IMGULT_PROCESSED_FILES_LIST:-imgult-processed-files.txt}
 
 ## file extensions are easily added now,
 ## thanks to B. Watson
@@ -79,19 +85,26 @@ find "$@" -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.jpe' \
   -o -iname '*.jfif' -o -iname '*.jif' -o -iname '*.jfi' -o -iname '*.thm' \
   -o -iname '*.png' -o -iname '*.apng' -o -iname '*.mng' -o -iname '*.gif' \
   -o -iname '*.svg' -o -iname '*.svgz' \) \
-    | sed 's@//@/@g' > imgult-files.txt
+    | sed 's@//@/@g' > ${IMGULT_FILES_LIST}
+
+## ignore any files that were already processed
+if [ -e ${IMGULT_PROCESSED_FILES_LIST} ]; then
+  echo "** ... IMGATCH SERVICE INITIATED ... **"
+  grep -v -x -f ${IMGULT_PROCESSED_FILES_LIST} ${IMGULT_FILES_LIST} > ${IMGULT_TEMP_FILES_LIST}
+  mv ${IMGULT_TEMP_FILES_LIST} ${IMGULT_FILES_LIST}
+fi
 
 ## back it up!
 if [ "$BACKUPIMAGES" = true ]; then
-  rsync -avz --files-from=imgult-files.txt $PWD imgult-backup-files/
+  rsync -avz --files-from=${IMGULT_FILES_LIST} $PWD imgult-backup-files/
 fi
 
 if [ "$EXIFREMOVE" = "true" ]; then
   if [ "$(which exiv2)" ]; then
     ## clear out that exif!
-    cat imgult-files.txt | \
+    cat ${IMGULT_FILES_LIST} | \
     while read IMGULT_FILE; do
-      exec nice -n11 exiv2 -v rm "$IMGULT_FILE" &
+      exec nice -n15 exiv2 -v rm "$IMGULT_FILE" &
     done
   else
     echo
@@ -102,10 +115,11 @@ fi
 
 if [ "$JPEGTRAN" ] && [ "$(which jpegoptim)" ]; then
   ## standard options with verbosity
-  egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
+  egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" ${IMGULT_FILES_LIST} | \
   while read IMGULT_FILE; do
-    exec nice -n12 $JPEGTRAN -verbose -outfile "$IMGULT_FILE" "$IMGULT_FILE" \
-    && nice -n12 jpegoptim -v "$IMGULT_FILE" &
+    exec echo "$IMGULT_FILE" >> "${IMGULT_PROCESSED_FILES_LIST}" \
+    && nice -n16 $JPEGTRAN -verbose -outfile "$IMGULT_FILE" "$IMGULT_FILE" \
+    && nice -n16 jpegoptim -v "$IMGULT_FILE" &
   done
 else
   echo
@@ -115,10 +129,11 @@ fi
 
 if [ "$(which pngquant)" ] && [ "$(which optipng)" ]; then
   ## standard options with verbosity
-  egrep -i "($(echo $PNGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
+  egrep -i "($(echo $PNGEXTENSIONS | tr ' ' '|')\$)" ${IMGULT_FILES_LIST} | \
   while read IMGULT_FILE; do
-    exec nice -n13 pngquant -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE" \
-    && nice -n13 optipng -v "$IMGULT_FILE" &
+    exec echo "$IMGULT_FILE" >> "${IMGULT_PROCESSED_FILES_LIST}" \
+    && nice -n17 pngquant -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE" \
+    && nice -n17 optipng -v "$IMGULT_FILE" &
   done
 else
   echo
@@ -129,9 +144,10 @@ fi
 if [ "$(which gifsicle)" ]; then
   ## -b keeps the filename, -O3 uses highest optimization level
   ## it is an 'O' as in Oxford, not a zero (0)
-  egrep -i "($(echo $GIFEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
+  egrep -i "($(echo $GIFEXTENSIONS | tr ' ' '|')\$)" ${IMGULT_FILES_LIST} | \
   while read IMGULT_FILE; do
-    exec nice -n14 gifsicle -V -b -O3 "$IMGULT_FILE" &
+    exec echo "$IMGULT_FILE" >> "${IMGULT_PROCESSED_FILES_LIST}" \
+    && nice -n18 gifsicle -V -b -O3 "$IMGULT_FILE" &
   done
 else
   echo
@@ -140,9 +156,10 @@ else
 fi
 
 if [ "$(which svgo)" ]; then
-  egrep -i "($(echo $SVGEXTENSIONS | tr ' ' '|')\$)" imgult-files.txt | \
+  egrep -i "($(echo $SVGEXTENSIONS | tr ' ' '|')\$)" ${IMGULT_FILES_LIST} | \
   while read IMGULT_FILE; do
-    exec nice -n15 svgo "$IMGULT_FILE" &
+    exec echo "$IMGULT_FILE" >> "${IMGULT_PROCESSED_FILES_LIST}" \
+    && nice -n19 svgo "$IMGULT_FILE" &
   done
 else
   echo
@@ -151,13 +168,13 @@ else
 fi
 
 ## let everything complete
-while [ -e imgult-files.txt ]; do
+while [ -e ${IMGULT_FILES_LIST} ]; do
   if [ "`pgrep egrep`" ] \
     || [ "`pgrep exiv2`" ] \
     || [ "`pgrep jpegtran`" ] || [ "`pgrep jpegoptim`" ] \
     || [ "`pgrep pngquant`" ] || [ "`pgrep optipng`" ] \
     || [ "`pgrep gifsicle`" ] || [ "`pgrep svgo`" ] \
-    || [ "`lsof -- imgult-files.txt`" ]; then
+    || [ "`lsof -- ${IMGULT_FILES_LIST}`" ]; then
       wait
       echo "... TUNING FLUX CAPACITOR ..."
   else
@@ -192,10 +209,10 @@ while [ -e imgult-files.txt ]; do
       cat postImgultSize
       echo
       echo "* Execute parametric cleaning sequence: * "
-      rm -v preImgultSize postImgultSize imgult-files.txt
+      rm -v preImgultSize postImgultSize ${IMGULT_FILES_LIST}
     else
       echo "* Execute parametric cleaning sequence: * "
-      rm -v imgult-files.txt
+      rm -v ${IMGULT_FILES_LIST}
     fi
     echo
     echo "* The imgult has completed. Take care. * "
@@ -203,4 +220,3 @@ while [ -e imgult-files.txt ]; do
     echo
   fi
 done
-
