@@ -19,6 +19,7 @@ Check out the [imgult site](https://imgult.github.io)!
 
     wget -N https://raw.githubusercontent.com/ryanpcmcquen/image-ultimator/master/imgult; sudo install -m755 imgult /usr/local/bin/; rm imgult
 
+**PSST!** To upgrade `imgult`, just run the same command as install (^^ THIS GUY ^^). It's just a shell script after all! :tada:
 
 
 Before you run it you need these amazing programs!
