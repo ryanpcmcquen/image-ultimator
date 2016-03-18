@@ -8,7 +8,7 @@ Check out the [imgult site](https://imgult.github.io)!
 
 ## What do people say about it?
 
-[Torkiliuz](https://github.com/Torkiliuz) succesfully tested `imgult` against a **26TB** sample that had approximately **140GB** of images. Wow! He made some helpful suggestions for the `4.0.00` release. Because of that, `imgult` now creates a file called `imgult-processed-files.txt` as a record of previously processed stuff. You can delete it if you do not mind files being processed again. :tada:
+[Torkiliuz](https://github.com/Torkiliuz) succesfully tested `imgult` against a **26TB** sample that had approximately **140GB** of images. Wow! He made some helpful suggestions for the `4.0.01` release. Because of that, `imgult` now creates a file called `imgult-processed-files.txt` as a record of previously processed stuff. You can delete it if you do not mind files being processed again. :tada:
 
 ### I just want to run it once (it will kindly remove itself):
 
