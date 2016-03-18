@@ -34,6 +34,12 @@ exiv2
 svgo
 ```
 
+Check here to see the recommended _minimum_ versions of these tools:
+
+https://github.com/ryanpcmcquen/image-ultimator/issues/5#issuecomment-198301854
+
+Of course, newer versions are probably even better! :smiley:
+
 Linux:
 
     sbopkg -i jpegoptim -i mozjpeg -i optipng -i pngquant -i gifsicle
