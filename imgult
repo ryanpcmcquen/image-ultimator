@@ -1,5 +1,5 @@
 #!/bin/sh
-## imgult, the image-ultimator v4.0.01 by ryanpcmcquen
+## imgult, the image-ultimator v4.1.00 by ryanpcmcquen
 
 ## thanks to B. Watson for lots of help  :^)
 
@@ -37,6 +37,10 @@ IMGULT_FILES_LIST=${IMGULT_FILES_LIST:-imgult-files.txt}
 IMGULT_TEMP_FILES_LIST=${IMGULT_TEMP_FILES_LIST:-imgult-temp-files.txt}
 ## log processed files so they can be skipped on subsequent runs
 IMGULT_PROCESSED_FILES_LIST=${IMGULT_PROCESSED_FILES_LIST:-imgult-processed-files.txt}
+
+## allow the user to turn off the IMGATCH service
+## (ignoring previously processed files)
+ENGAGE_IMGATCH_SERVICE=${ENGAGE_IMGATCH_SERVICE:-true}
 
 ## file extensions are easily added now,
 ## thanks to B. Watson
@@ -88,7 +92,7 @@ find "$@" -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.jpe' \
     | sed 's@//@/@g' > ${IMGULT_FILES_LIST}
 
 ## ignore any files that were already processed
-if [ -e ${IMGULT_PROCESSED_FILES_LIST} ]; then
+if [ -e ${IMGULT_PROCESSED_FILES_LIST} ] && [ "${ENGAGE_IMGATCH_SERVICE}" = true ]; then
   echo "** ... IMGATCH SERVICE INITIATED ... **"
   grep -v -x -f ${IMGULT_PROCESSED_FILES_LIST} ${IMGULT_FILES_LIST} > ${IMGULT_TEMP_FILES_LIST}
   mv ${IMGULT_TEMP_FILES_LIST} ${IMGULT_FILES_LIST}
