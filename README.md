@@ -87,3 +87,11 @@ To back up all original images to ```imgult-backup-files/```, run:
 This can be run with the EXIF option as well:
 
     EXIFREMOVE=n BACKUPIMAGES=true imgult
+
+##### IMGATCH
+
+To turn off the image matching service (which ignores previously processed files), either run `imgult` like so:
+
+    ENGAGE_IMGATCH_SERVICE=false imgult
+
+Or, set your environment to have `ENGAGE_IMGATCH_SERVICE` to `false` (`export` it in `.bashrc` or `.bash_profile`).
