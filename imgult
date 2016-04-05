@@ -1,5 +1,5 @@
 #!/bin/sh
-## imgult, the image-ultimator v4.1.00 by ryanpcmcquen
+## imgult, the image-ultimator v4.1.01 by ryanpcmcquen
 
 ## thanks to B. Watson for lots of help  :^)
 
@@ -217,6 +217,9 @@ while [ -e ${IMGULT_FILES_LIST} ]; do
     else
       echo "* Execute parametric cleaning sequence: * "
       rm -v ${IMGULT_FILES_LIST}
+    fi
+    if [ "${ENGAGE_IMGATCH_SERVICE}" = false ]; then
+      rm -v ${IMGULT_PROCESSED_FILES_LIST}
     fi
     echo
     echo "* The imgult has completed. Take care. * "
