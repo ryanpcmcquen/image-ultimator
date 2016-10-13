@@ -1,7 +1,7 @@
 #!/bin/sh
-## imgult, the image-ultimator v4.1.01 by ryanpcmcquen
+## imgult, the image-ultimator v4.1.02 by ryanpcmcquen
 
-## thanks to B. Watson for lots of help  :^)
+## Thanks to B. Watson for lots of help  :^)
 
 # Ryan P.C. McQuen | Everett, WA | ryan.q@linux.com
 # This program is free software; you can redistribute it and/or modify
@@ -22,28 +22,28 @@
 # along with this program (most likely, a file named COPYING). If
 # not, see <https://www.gnu.org/licenses/>.
 
-## don't output file size changes by default, because du is slow
-## override with SPACE_SAVING_CALC=on
+## Do not output file size changes by default, because du is slow
+## override with `SPACE_SAVING_CALC=on`.
 SPACE_SAVING_CALC=${SPACE_SAVING_CALC:-off}
 
-## prepend imgult on the command line with
-## BACKUPIMAGES=true  (to back everything up)
-## EXIFREMOVE=n  (to keep EXIF data)
+## Prepend imgult on the command line with:
+##  BACKUPIMAGES=true  (to back everything up)
+##  EXIFREMOVE=n  (to keep EXIF data)
 BACKUPIMAGES=${BACKUPIMAGES:-false}
 EXIFREMOVE=${EXIFREMOVE:-true}
 
-## create a log of files
+## Create a log of files:
 IMGULT_FILES_LIST=${IMGULT_FILES_LIST:-imgult-files.txt}
 IMGULT_TEMP_FILES_LIST=${IMGULT_TEMP_FILES_LIST:-imgult-temp-files.txt}
-## log processed files so they can be skipped on subsequent runs
+## Log processed files so they can be skipped on subsequent runs:
 IMGULT_PROCESSED_FILES_LIST=${IMGULT_PROCESSED_FILES_LIST:-imgult-processed-files.txt}
 
-## allow the user to turn off the IMGATCH service
-## (ignoring previously processed files)
+## Allow the user to turn off the IMGATCH service
+## (ignoring previously processed files).
 ENGAGE_IMGATCH_SERVICE=${ENGAGE_IMGATCH_SERVICE:-true}
 
-## file extensions are easily added now,
-## thanks to B. Watson
+## File extensions are easily added now,
+## thanks to B. Watson.
 JPGEXTENSIONS="jpg jpeg jpe jfif jif jfi thm"
 PNGEXTENSIONS="png apng mng"
 GIFEXTENSIONS="gif"
@@ -62,51 +62,52 @@ if [ -z "$JPEGTRAN" ]; then
 fi
 
 if [ "${SPACE_SAVING_CALC}" = "on" ]; then
-  ## find out how big the directory/files are
-  ## so we can relish in the savings later
+  ## Find out how big the directory/files are
+  ## so we can relish in the savings later.
   du -hs "$@" > preImgultSize
 fi
 
-## bsd find needs a path to work, gnu find does not;
+## BSD `find` needs a path to work, GNU `find` does not,
 ## so we set it here if positional parameters are
-## equal to 0
+## equal to 0.
 ##
-## i was originally checking if "$@" was empty,
+## We were originally checking if "$@" was empty,
 ## but it turns out that is a nightmare if regex
-## paths are fed to imgult
+## paths are fed to imgult.
 if [ $# -eq 0 ]; then
   set -- .
 fi
 
-## below we have leaning toothpick syndrome
+## Below we have leaning toothpick syndrome
 ## ...
-## notice how the output is filtered with sed, in case
+## Notice how the output is filtered with sed, in case
 ## the user feeds a directory using tab completion,
 ## leading to a trailing slash, and ergo, double slashes
 ## (most systems are fine with double slashes,
-## but i avoid assumptions if possible)
+## but we should avoid assumptions if possible).
 find "$@" -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.jpe' \
   -o -iname '*.jfif' -o -iname '*.jif' -o -iname '*.jfi' -o -iname '*.thm' \
   -o -iname '*.png' -o -iname '*.apng' -o -iname '*.mng' -o -iname '*.gif' \
   -o -iname '*.svg' -o -iname '*.svgz' \) \
     | sed 's@//@/@g' > ${IMGULT_FILES_LIST}
 
-## ignore any files that were already processed
+## Ignore any files that were already processed.
 if [ -e ${IMGULT_PROCESSED_FILES_LIST} ] && [ "${ENGAGE_IMGATCH_SERVICE}" = true ]; then
   echo "** ... IMGATCH SERVICE INITIATED ... **"
   grep -v -x -f ${IMGULT_PROCESSED_FILES_LIST} ${IMGULT_FILES_LIST} > ${IMGULT_TEMP_FILES_LIST}
   mv ${IMGULT_TEMP_FILES_LIST} ${IMGULT_FILES_LIST}
 fi
 
-## back it up!
+## Back it up!
 if [ "$BACKUPIMAGES" = true ]; then
   rsync -avz --files-from=${IMGULT_FILES_LIST} $PWD imgult-backup-files/
 fi
 
 if [ "$EXIFREMOVE" = "true" ]; then
   if [ "$(which exiv2)" ]; then
-    ## clear out that exif!
-    cat ${IMGULT_FILES_LIST} | \
+    ## Clear out that exif, but only if it is
+    ## not a PICO-8 cartridge.
+    grep -iv ".p8.png" ${IMGULT_FILES_LIST} | \
     while read IMGULT_FILE; do
       exec nice -n15 exiv2 -v rm "$IMGULT_FILE" &
     done
@@ -118,7 +119,7 @@ if [ "$EXIFREMOVE" = "true" ]; then
 fi
 
 if [ "$JPEGTRAN" ] && [ "$(which jpegoptim)" ]; then
-  ## standard options with verbosity
+  ## Standard options with verbosity:
   egrep -i "($(echo $JPGEXTENSIONS | tr ' ' '|')\$)" ${IMGULT_FILES_LIST} | \
   while read IMGULT_FILE; do
     exec nice -n16 $JPEGTRAN -verbose -outfile "$IMGULT_FILE" "$IMGULT_FILE" \
@@ -132,7 +133,7 @@ else
 fi
 
 if [ "$(which pngquant)" ] && [ "$(which optipng)" ]; then
-  ## standard options with verbosity
+  ## Standard options with verbosity:
   egrep -i "($(echo $PNGEXTENSIONS | tr ' ' '|')\$)" ${IMGULT_FILES_LIST} | \
   while read IMGULT_FILE; do
     exec nice -n17 pngquant -f -v --skip-if-larger -o "$IMGULT_FILE" -- "$IMGULT_FILE" \
@@ -146,8 +147,8 @@ else
 fi
 
 if [ "$(which gifsicle)" ]; then
-  ## -b keeps the filename, -O3 uses highest optimization level
-  ## it is an 'O' as in Oxford, not a zero (0)
+  ## -b keeps the filename, -O3 uses highest optimization level.
+  ## It is an 'O' as in Oxford, not a zero (0).
   egrep -i "($(echo $GIFEXTENSIONS | tr ' ' '|')\$)" ${IMGULT_FILES_LIST} | \
   while read IMGULT_FILE; do
     exec nice -n18 gifsicle -V -b -O3 "$IMGULT_FILE" &
@@ -171,7 +172,7 @@ else
   echo
 fi
 
-## let everything complete
+## Let everything complete:
 while [ -e ${IMGULT_FILES_LIST} ]; do
   if [ "`pgrep egrep`" ] \
     || [ "`pgrep exiv2`" ] \
@@ -183,11 +184,11 @@ while [ -e ${IMGULT_FILES_LIST} ]; do
       echo "... TUNING FLUX CAPACITOR ..."
   else
     if [ "${SPACE_SAVING_CALC}" = "on" ]; then
-      ## calculate the new size here, so fast comps don't finish early
+      ## Calculate the new size here, so fast comps don't finish early:
       du -hs "$@" > postImgultSize
     fi
     echo
-    ## thanks to patorjk.com/software/taag/
+    ## Thanks to patorjk.com/software/taag/
     echo "****************************************************************************** "
     echo "                 ___           ___           ___           ___       ___      "
     echo "     ___        /\__\         /\  \         /\__\         /\__\     /\  \     "
@@ -209,7 +210,7 @@ while [ -e ${IMGULT_FILES_LIST} ]; do
       cat preImgultSize
       echo
       echo "* Execute imgulted capacity outputting: * "
-      ## find the patented imgult savings!
+      ## Find the patented imgult savings!
       cat postImgultSize
       echo
       echo "* Execute parametric cleaning sequence: * "
