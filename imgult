@@ -1,5 +1,5 @@
 #!/bin/sh
-## imgult, the image-ultimator v4.1.02 by ryanpcmcquen
+## imgult, the image-ultimator v4.2.00 by ryanpcmcquen
 
 ## Thanks to B. Watson for lots of help  :^)
 
@@ -85,10 +85,14 @@ fi
 ## leading to a trailing slash, and ergo, double slashes
 ## (most systems are fine with double slashes,
 ## but we should avoid assumptions if possible).
+## ...
+## Also, we ignore PICO-8 (.p8) files as optimizing
+## them renders them useless.
 find "$@" -type f -a \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.jpe' \
   -o -iname '*.jfif' -o -iname '*.jif' -o -iname '*.jfi' -o -iname '*.thm' \
   -o -iname '*.png' -o -iname '*.apng' -o -iname '*.mng' -o -iname '*.gif' \
   -o -iname '*.svg' -o -iname '*.svgz' \) \
+  -not -iname '*.p8*' \
     | sed 's@//@/@g' > ${IMGULT_FILES_LIST}
 
 ## Ignore any files that were already processed.
@@ -105,9 +109,8 @@ fi
 
 if [ "$EXIFREMOVE" = "true" ]; then
   if [ "$(which exiv2)" ]; then
-    ## Clear out that exif, but only if it is
-    ## not a PICO-8 cartridge.
-    grep -iv ".p8.png" ${IMGULT_FILES_LIST} | \
+    ## Clear out that exif!
+    cat ${IMGULT_FILES_LIST} | \
     while read IMGULT_FILE; do
       exec nice -n15 exiv2 -v rm "$IMGULT_FILE" &
     done
