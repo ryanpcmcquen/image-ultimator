@@ -1,8 +1,8 @@
-image-ultimator
+`imgult`, The image-ultimator.
 ===============
 
 ## What is it?
-imgult is a tiny and mighty script that will recursively loop through a directory and its subdirectories optimizing all GIFs, JPGs, PNGs and SVGs (the script supports several types of these kinds of extensions, check the source to see). It also removes EXIF data (run with ```EXIFREMOVE=n``` to keep EXIF data). You can backup the images by running it with (```BACKUPIMAGES=true```).
+`imgult` is a tiny and mighty script that will recursively loop through a directory and its subdirectories optimizing all GIFs, JPGs, PNGs and SVGs (the script supports several types of these kinds of extensions, check the source to see). It also removes EXIF data (run with ```EXIFREMOVE=n``` to keep EXIF data). You can backup the images by running it with (```BACKUPIMAGES=true```).
 
 Check out the [imgult site](https://imgult.github.io)!
 
@@ -13,7 +13,6 @@ Check out the [imgult site](https://imgult.github.io)!
 ### I just want to run it once (it will kindly remove itself):
 
     curl https://raw.githubusercontent.com/ryanpcmcquen/image-ultimator/master/imgult | sh
-
 
 ### I love this script! I want to *install* it and use it everywhere!
 
@@ -40,15 +39,35 @@ https://github.com/ryanpcmcquen/image-ultimator/issues/5#issuecomment-198301854
 
 Of course, newer versions are probably even better! :smiley:
 
-Linux:
+### Linux:
+
+#### Slackware:
 
     sbopkg -i jpegoptim -i mozjpeg -i optipng -i pngquant -i gifsicle
 
-Mac:
+#### Ubuntu (`16.04+` recommended):
+
+    sudo apt-get install jpegoptim optipng pngquant gifsicle exiv2
+
+You will need to compile `mozjpeg` from source. You will probably need these:
+
+    sudo apt-get install nasm libtool autoconf build-essential
+
+After that, download the most recent release and run something like this:
+
+```sh
+autoreconf -fiv
+./configure --disable-static
+
+make
+sudo make install
+```
+
+### Mac:
 
     brew install jpegoptim mozjpeg optipng pngquant gifsicle exiv2
 
-Linux & Mac:
+### Linux & Mac:
 
     npm install -g svgo
 
@@ -56,7 +75,6 @@ Linux & Mac:
 # USE IMGULT AT YOUR OWN RISK!
 
 Just run this command in any directory with images, note that it will *OVERWRITE* images (GIFs, JPGs, PNGs & SVGs) and loop recursively through all directories INSIDE the directory you run it in. There is a BACKUP option though.  ;^)
-
 
 
 ##### If it is installed, how do I use it?
@@ -73,7 +91,7 @@ Or feed imgult directories and/or files:
 
 ##### EXIF removal
 
-Default is to remove exif data, to keep EXIF data, run:
+The default is to remove EXIF data, to keep EXIF data, run:
 
     EXIFREMOVE=n imgult
 
