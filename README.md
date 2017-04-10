@@ -53,6 +53,10 @@ You will need to compile `mozjpeg` from source. You will probably need these:
 
     sudo apt-get install nasm libtool autoconf build-essential
 
+Some systems will also require the following packages:
+
+    sudo apt-get install pkg-config libpng-dev
+
 After that, download the most recent release and run something like this:
 
 ```sh
