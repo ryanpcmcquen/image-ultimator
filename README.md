@@ -45,15 +45,23 @@ Of course, newer versions are probably even better! :smiley:
 
     sbopkg -i jpegoptim -i mozjpeg -i optipng -i pngquant -i gifsicle
 
+#### Fedora:
+
+    sudo dnf install jpegoptim optipng pngquant gifsicle exiv2
+
 #### Ubuntu (`16.04+` recommended):
 
     sudo apt-get install jpegoptim optipng pngquant gifsicle exiv2
 
+---
+
 You will need to compile `mozjpeg` from source. You will probably need these:
+
+    sudo dnf install nasm autoconf
 
     sudo apt-get install nasm libtool autoconf build-essential
 
-Some systems will also require the following packages:
+Some Ubuntu systems will also require the following packages:
 
     sudo apt-get install pkg-config libpng-dev
 
