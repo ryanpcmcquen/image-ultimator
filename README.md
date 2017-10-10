@@ -55,9 +55,13 @@ Of course, newer versions are probably even better! :smiley:
 
 ---
 
-You will need to compile `mozjpeg` from source. You will probably need these:
+On some systems you will need to compile `mozjpeg` from source. You will probably need these:
 
-    sudo dnf install nasm autoconf
+#### Fedora:
+
+    sudo dnf install nasm libtool autoconf
+
+#### Ubuntu (`16.04+` recommended):
 
     sudo apt-get install nasm libtool autoconf build-essential
 
