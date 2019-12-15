@@ -90,7 +90,7 @@ sudo make install
 
 # USE IMGULT AT YOUR OWN RISK!
 
-Just run this command in any directory with images, note that it will *OVERWRITE* images (GIFs, JPGs, PNGs & SVGs) and loop recursively through all directories INSIDE the directory you run it in. There is a BACKUP option though.  ;^)
+Just run this command in any directory with images. It will *OVERWRITE* images (GIFs, JPGs, PNGs & SVGs), and loop recursively through all directories INSIDE the directory you run it in. There is a BACKUP option though.  ;^)
 
 
 ##### If it is installed, how do I use it?
