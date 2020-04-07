@@ -3,7 +3,7 @@
 
 ## Thanks to B. Watson for lots of help  :^)
 
-# Ryan P. C. McQuen | Everett, WA | ryanpcmcquen@member.fsf.org
+# Ryan P. C. McQuen | Everett, WA
 
 ## Do not output file size changes by default, because du is slow
 ## override with `SPACE_SAVING_CALC=on`.
